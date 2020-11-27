@@ -15,7 +15,7 @@ function CreatePost() {
 export default CreatePost
 
 
-// j
+
 
 export function NewPost(){
     return(
