@@ -1,0 +1,22 @@
+{
+    "name": "instagram-backend",
+    "version": "1.0.0",
+    "description": "backend of off-brand instagram web-app",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "author": "Mo Patel",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.21.0",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "module": "^1.2.5",
+        "mongoose": "^5.10.16",
+        "nodemon": "^2.0.6"
+    }
+}

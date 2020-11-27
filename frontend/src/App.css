@@ -1,0 +1,14 @@
+.App {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 20px;
+
+}
+
+.App-body{
+  display: flex;
+  
+  
+}
+
