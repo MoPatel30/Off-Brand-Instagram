@@ -1,5 +1,6 @@
 .post-body{
     border: 2px solid lightgrey;
+    margin-bottom: 75px;
 
 }
 
@@ -15,4 +16,33 @@
     margin-top: 20px;
     margin-bottom: 20px;
 
+}
+
+
+
+.post-form{
+    position: fixed;
+    left: 100px;
+    z-index: 10;
+    display: flex;
+    flex: 0.2;
+    border: 5px solid lightslategray;
+    background-color: lightsteelblue;
+
+}
+
+.input-forms{
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 35px;
+}
+
+.label-forms{
+    text-align: left; 
+    margin-top: 25px;
+    margin-bottom: 10px;
+    margin-left: 10px;
 }

@@ -11,8 +11,8 @@ function App() {
       
       <div className = "App-body">
         <CreatePost />
+        
         <PhotoFeed />
-        <NewPost />
 
       </div>
     
