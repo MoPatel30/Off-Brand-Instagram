@@ -1,6 +1,8 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import "./create-post.css"
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import PhotoFeed from "./photo-feed"
+import axios from "./axios";
 
 
 function CreatePost() {
@@ -28,7 +30,6 @@ export default CreatePost
 
 
 
-
 export function MakePostForm(){
     const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear()))
    
@@ -42,17 +43,27 @@ export function MakePostForm(){
     const postPicture = (e) => {
         e.preventDefault()
 
-        
         setTime(date)
 
-        console.log(setPic)
-        console.log(setDesc)
-        console.log(setName)
-        console.log(setTime)
 
-        setPost(<NewPost photo = {document.getElementById("display-image").src} description = {desc} user = {name} timestamp = {time} />)
+        var newPost = <NewPost photo = {document.getElementById("display-image").src} description = {desc} user = {name} timestamp = {time} />
+        setPost(newPost)
+        sendPost()
 
     }   
+
+    const sendPost = () => {
+        
+        axios.post("/posts/", {
+            name: name,
+            timestamp: date,
+            photo: pic,
+            description: desc
+        })
+
+        setPic("")
+        setDesc("")
+    }
 
 
     const handleImageUpload = (e) => {
@@ -87,9 +98,9 @@ export function MakePostForm(){
 
             </form>
 
+            <img id = "display-image" alt = "pic" src= "" style = {{width: "400px", height: "400px"}} />
+           
             <p>{post}</p>
-            <img id = "display-image" alt = "pic" src="" style = {{width: "400px", height: "400px"}} />
-    
         </div>
     )
    
@@ -99,6 +110,7 @@ export function MakePostForm(){
 
 
 export function NewPost(props){
+
     const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear()))
 
     function displayPicture(pic) {
@@ -125,7 +137,6 @@ export function NewPost(props){
                 </div>
 
                 <div className = "post-img">
-                    <img alt = "flower" src = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.xorA8_bHWQVZaLi-mGEnPQHaFk%26pid%3DApi&f=1" />
                     <img id = "display-image" alt = "pic" src= {props.photo} style = {{width: "400px", height: "400px"}} />
                 </div>
 
@@ -135,6 +146,7 @@ export function NewPost(props){
 
             </div>
 
+    
         </div>
     )
 }
