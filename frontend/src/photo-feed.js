@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import "./photo-feed.css"
 import {NewPost} from "./create-post"
-import axios from "./axios"
+import instance from "./axios"
 
 /*
 function PhotoFeed() {
@@ -39,14 +39,22 @@ export class PhotoFeedTwo extends React.Component{
         this.state = {
             posts: []
         }
-        /*
-        axios.get("/posts/")
-        .then((response) => {
-            this.setState({
-                posts: response.data
-            })
-        }*/
+        this.showPost()
+        console.log(this.state.posts)
+    }
 
+    showPost = () => {
+        instance.get("/posts/") 
+            .then((response) => {
+                this.setState({
+                    posts: response.data
+                })
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+            
     }
 
 

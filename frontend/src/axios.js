@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const instance = axios.create({
-    url: "http://localhost:6000"
+    baseURL: "http://off-brand-instagram.web.app"
 })
 
 export default instance

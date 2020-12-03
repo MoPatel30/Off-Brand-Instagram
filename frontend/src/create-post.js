@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import "./create-post.css"
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import PhotoFeed from "./photo-feed"
-import axios from "./axios";
+import instance from "./axios";
 
 
 function CreatePost() {
@@ -53,15 +53,16 @@ export function MakePostForm(){
     }   
 
     const sendPost = () => {
-        
-        axios.post("/posts/", {
-            name: name,
-            timestamp: date,
-            photo: pic,
-            description: desc
+        console.log('sent')
+
+        instance.post("/posts/", {
+            name: String(name),
+            timestamp: String(date),
+            photo: String(pic),
+            description: String(desc)
         })
 
-        setPic("")
+        setPic("") 
         setDesc("")
     }
 
