@@ -1,7 +1,7 @@
 import React from "react"
 import './App.css';
 import CreatePost, {NewPost} from "./create-post"
-import { PhotoFeedTwo} from "./photo-feed";
+import PhotoFeed, {PhotoFeedTwo} from "./photo-feed";
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         <CreatePost />
         
         
-        <PhotoFeedTwo />
+        <PhotoFeed />
 
       </div>
     

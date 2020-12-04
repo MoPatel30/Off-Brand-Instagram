@@ -3,6 +3,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 let Posts = require("./dbNewPost")
+var router = express.Router()
 
 
 
@@ -31,6 +32,8 @@ db.once("open", () => {
     console.log("DB Connected")
 })
 
+const postRouter = require("./dbNewPost")
+app.use("/posts", postRouter)
 
 
 // api routes
@@ -38,8 +41,46 @@ db.once("open", () => {
 app.get("/", (req, res) => res.status(200).send("hello world"))
 
 //post posts
-app.post("/posts/", (req, res) => {
+router.route("/posts").post((req, res) => {
+    console.log("request received")
+
     const dbPost = req.body
+    dbPost.save()
+        .then(() => res.json("user added!"))
+        .catch(err => res.status(400).json("Errors: " + err))
+
+})
+
+module.exports = router
+
+/*
+.post("https://off-brand-instagram.web.app/posts", (req, res) => {
+    console.log("using post method")
+
+    const username = req.body.name
+    const date = req.body.timestamp
+    const photo = req.body.photo
+    const description = req.body.description
+
+    const dbPost = new Posts
+
+    db.collection("postcontents").insertOne(dbPost, function(err, result) {
+        if(err){
+            res.status(500).send(err)
+        }
+        else{
+            res.status(201).send(data)
+        }
+    })
+
+    dbPost.save(function(err) {
+        if (err)
+           throw err;
+        else 
+           console.log('post saved successfully...');
+    });
+
+
     Posts.create(dbPost, (err, data) => {
         if(err){
             res.status(500).send(err)
@@ -50,9 +91,12 @@ app.post("/posts/", (req, res) => {
     })
 
 })
+*/
+
 
 //get posts
-app.get("/posts/", (req, res) => {
+app.get("/posts", (req, res) => {
+    console.log(res)
     Posts.find((err, data) => {
         if(err){
             res.status(500).send(err)
