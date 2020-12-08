@@ -19,51 +19,44 @@ function PhotoFeed() {
     )
 }
 
-export default PhotoFeed
+// export default PhotoFeed
 
 
-export class PhotoFeedTwo extends React.Component{
-    constructor(){
-        super()
-        this.state = {
-            posts: []
-        }
-        this.showPost()
-        console.log(this.state.posts)
-    }
+function PhotoFeedTwo(){
+    const [posts, setPosts] = useState([])
 
-    showPost = () => {
-        instance.get("/posts/") 
+
+    
+    useEffect(() => {
+        
+        instance.get("http://localhost:3001/")
             .then((response) => {
-                this.setState({
-                    posts: response.data
-                })
-                console.log(response.data)
             })
             .catch((error) => {
                 console.log(error)
             })
-            
-    }
 
 
-    render() {
-        return (
-            <div className = "feed">
-                {this.state.posts.map((post) => (
-                    <NewPost photo = {post.photo} description = {post.description} user = {post.name} timestamp = {post.timestamp} />
-                ))}  
+        instance.get("/test") 
+            .then((response) => {
+                setPosts(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            }) 
+    }, [posts])
+    
 
-                <NewPost photo = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.xorA8_bHWQVZaLi-mGEnPQHaFk%26pid%3DApi&f=1" description = "Hello world" user = "Mo Patel" timestamp = {Date.now()} />
-                <NewPost photo = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.xorA8_bHWQVZaLi-mGEnPQHaFk%26pid%3DApi&f=1" description = "Hello world" user = "Mo Patel" timestamp = {Date.now()} />
-                <NewPost photo = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.xorA8_bHWQVZaLi-mGEnPQHaFk%26pid%3DApi&f=1" description = "Hello world" user = "Mo Patel" timestamp = {Date.now()} />
-                <NewPost photo = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.xorA8_bHWQVZaLi-mGEnPQHaFk%26pid%3DApi&f=1" description = "Hello world" user = "Mo Patel" timestamp = {Date.now()} />
-                <NewPost photo = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.xorA8_bHWQVZaLi-mGEnPQHaFk%26pid%3DApi&f=1" description = "Hello world" user = "Mo Patel" timestamp = {Date.now()} />
-           
 
-            </div>
-        )
-    }
+    return (
+        <div className = "feed">
+            {posts.map((post) => (
+                <NewPost photo = {post.photo} description = {post.description} user = {post.name} timestamp = {post.timestamp} />    
+            ))}  
+
+        </div>
+    )
 }
 
+export default PhotoFeedTwo
 

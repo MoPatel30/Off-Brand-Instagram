@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import "./create-post.css"
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import PhotoFeed from "./photo-feed"
-import axios from "./axios";
+import instance from "./axios";
 
 
 function CreatePost() {
@@ -40,6 +40,8 @@ export function MakePostForm(){
 
     const [post, setPost] = useState("")
 
+    const [hello, setHello] = useState("")
+
     const postPicture = (e) => {
         e.preventDefault()
 
@@ -54,20 +56,38 @@ export function MakePostForm(){
 
     const sendPost = () => {
         console.log('sent')
-        console.log(axios.getUri)
-        console.log(axios)
-        axios.post("https://off-brand-instagram.web.app/posts", {
+        console.log(instance.getUri)
+        console.log(instance)
+
+        instance.get("http://localhost:3001/")
+            .then((response) => {
+                setHello(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+        instance.get("http://localhost:3001/test")
+            .then((response) => {
+                alert(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+        instance.post("http://localhost:3001/test", {
             name: String(name),
             timestamp: String(date),
-            photo: String(pic),
+            photo: pic,
             description: String(desc)
         })
-        axios.post("/posts", {
-            name: String(name),
-            timestamp: String(date),
-            photo: String(pic),
-            description: String(desc)
-        })
+        .then((response) => {
+            console.log("fnh", response);
+          })
+          .catch((err) => {
+            throw err;
+            });
+        
 
         setPic("") 
         setDesc("")
@@ -79,7 +99,7 @@ export function MakePostForm(){
         
         var image = document.getElementById("picture").files[0];
         setPic(image)
-        console.log(setPic)
+        console.log(pic)
         var reader = new FileReader();
 
         reader.onload = function(e) {
@@ -109,6 +129,7 @@ export function MakePostForm(){
             <img id = "display-image" alt = "pic" src= "" style = {{width: "400px", height: "400px"}} />
            
             <p>{post}</p>
+            <p>{hello}</p>
         </div>
     )
    

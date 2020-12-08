@@ -1,7 +1,7 @@
 import React from "react"
 import './App.css';
 import CreatePost, {NewPost} from "./create-post"
-import PhotoFeed, {PhotoFeedTwo} from "./photo-feed";
+import PhotoFeedTwo from "./photo-feed";
 
 
 function App() {
@@ -10,10 +10,9 @@ function App() {
       <h2> Off-Brand Instagram </h2>
       
       <div className = "App-body">
-        <CreatePost />
-        
-        
-        <PhotoFeed />
+
+        <CreatePost /> 
+        <PhotoFeedTwo />
 
       </div>
     

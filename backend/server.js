@@ -3,18 +3,20 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 let Posts = require("./dbNewPost")
+const bodyParser = require("body-parser")
 var router = express.Router()
 
 
 
 //app config
 const app = express()
-const port = process.env.PORT || 6000
+const port = process.env.PORT || 3001
 
 
 //middleware
 app.use(express.json())
 app.use(cors())
+app.use(bodyParser.json())
 
 
 //mongoDB connection
@@ -37,17 +39,61 @@ app.use("/posts", postRouter)
 
 
 // api routes
-//get tester
+// get tester
 app.get("/", (req, res) => res.status(200).send("hello world"))
 
+app.get("/test", (req, res) => {
+    Posts.find((err, data) => {
+        if (err){
+            res.status(500).send(err)
+        }
+        else{
+            res.status(201).send(data)
+        }
+    })
+})
+
+app.post("/test", (req, res) => {
+    console.log("post test went thru")
+
+    /*const dbPost = {
+        name: req.body.name,
+        timestamp: req.body.timestamp,
+        photo: req.body.photo,
+        description: req.body.description
+    }*/
+    const dbPost = req.body
+
+    db.collection("postcontents").insertOne(dbPost, function(err, result) {
+        if(err){
+            res.status(500).send(err)
+        }
+        else{
+            res.status(201).send(result)
+        }
+    })
+
+})
+
 //post posts
-router.route("/posts").post((req, res) => {
+router.post("/posts", (req, res) => {
     console.log("request received")
+
 
     const dbPost = req.body
     dbPost.save()
         .then(() => res.json("user added!"))
         .catch(err => res.status(400).json("Errors: " + err))
+
+
+    db.collection("postcontents").insertOne(dbPost, function(err, result) {
+        if(err){
+            res.status(500).send(err)
+        }
+        else{
+            res.status(201).send(data)
+        }
+    })
 
 })
 
@@ -111,3 +157,5 @@ app.get("/posts", (req, res) => {
 
 //listener
 app.listen(port, () => console.log("Listening on localhost:" + {port}))
+
+module.exports = app
