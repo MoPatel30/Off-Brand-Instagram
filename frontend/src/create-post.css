@@ -20,14 +20,18 @@
 
 
 
+
 .post-form{
     position: fixed;
-    left: 100px;
-    z-index: 10;
+    flex-direction: column;
     display: flex;
-    flex: 0.2;
-    border: 5px solid lightslategray;
-    background-color: lightsteelblue;
+    align-items: center;
+    left: 560px;
+    z-index: 10;
+    height: 80%;
+    border: 5px solid black;
+    background-color: lightgray;
+    opacity: 0.9;
 
 }
 

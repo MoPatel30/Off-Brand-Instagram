@@ -1,8 +1,11 @@
 .feed{
     display: flex;
     flex-direction: column;
-    flex: 1;
-    height: 775px;
+    flex: 0.8;
+    height: 100vh;
     overflow-y: scroll;
+    position: fixed;
+    top: 150px;
+
 
 }

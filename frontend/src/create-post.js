@@ -153,7 +153,9 @@ export function MakePostForm(){
            
             <p>{post}</p>
             <p>{hello}</p>
+
         </div>
+                 
     )
    
 }
@@ -167,7 +169,6 @@ export function NewPost(props){
 
     return( 
         <div>
-        
             <div className = "post-body">
                 <div className = "post-header">
                     <h2>{props.user}</h2>
@@ -182,9 +183,8 @@ export function NewPost(props){
                 <div className = "post-description">
                     <p><b> Description: </b> {props.description} </p>
                 </div>
-
             </div>
-
         </div>
-        )  
+    
+    )  
 }
