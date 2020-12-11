@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 const newpostSchema = mongoose.Schema({
     name: String,
     timestamp: String,
-    photo: Image,
+    photo:  String,
     description: String
 })
 

@@ -1,41 +1,14 @@
-// importing
-const express = require("express")
-const mongoose = require("mongoose")
-const cors = require("cors")
-let Posts = require("./dbNewPost")
-const bodyParser = require("body-parser")
-var router = express.Router()
-
-
-
-//app config
-const app = express()
-const port = process.env.PORT || 3001
-
-
-//middleware
-app.use(express.json())
-app.use(cors())
-app.use(bodyParser.json())
-
-
-//mongoDB connection
-const connection_url = ""
-
-mongoose.connect(connection_url,{
-    useCreateIndex: true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-
-const db = mongoose.connection
-
-db.once("open", () => {
-    console.log("DB Connected")
-})
-
+var express = require('express');
 const postRouter = require("./dbNewPost")
+
 app.use("/posts", postRouter)
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', '*');  // enables all the methods to take place
+    return next();
+});
 
 
 // api routes
@@ -155,7 +128,3 @@ app.get("/posts", (req, res) => {
 
 
 
-//listener
-app.listen(port, () => console.log("Listening on localhost:" + {port}))
-
-module.exports = app

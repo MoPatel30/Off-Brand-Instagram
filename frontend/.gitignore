@@ -12,6 +12,19 @@
 /build
 
 
+# firebase stuff
+.firestore.rules
+
+.firestore.indexes.json
+
+.storage.rules
+
+.firebase.json
+
+.firebaserc
+
+
+
 .package-lock.json
 
 # misc

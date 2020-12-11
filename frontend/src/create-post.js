@@ -2,7 +2,12 @@ import React, {useState, useEffect} from "react"
 import "./create-post.css"
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import PhotoFeed from "./photo-feed"
-import instance from "./axios";
+import axios from "axios";
+import firebase from "firebase"
+import db from "./firebase";
+import {storage} from "./firebase"
+import 'firebase/firestore';
+import 'firebase/storage';
 
 
 function CreatePost() {
@@ -30,84 +35,101 @@ export default CreatePost
 
 
 
+
 export function MakePostForm(){
-    const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear()))
-   
-    const [pic, setPic] = useState("")
+    const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear())) 
+    const [pic, setPic] = useState(null)
     const [desc, setDesc] = useState("")
     const [name, setName] = useState("Mo Patel")
     const [time, setTime] = useState("")
 
+    const [progress, setProgress] = useState(0)
     const [post, setPost] = useState("")
-
     const [hello, setHello] = useState("")
-
-    const postPicture = (e) => {
-        e.preventDefault()
-
-        setTime(date)
+    const [url, setUrl] = useState("")
 
 
-        var newPost = <NewPost photo = {document.getElementById("display-image").src} description = {desc} user = {name} timestamp = {time} />
-        setPost(newPost)
-        sendPost()
 
-    }   
+    function getPictureURL(post){
 
-    const sendPost = () => {
-        console.log('sent')
-        console.log(instance.getUri)
-        console.log(instance)
-
-        instance.get("http://localhost:3001/")
-            .then((response) => {
-                setHello(response.data)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-
-        instance.get("http://localhost:3001/test")
-            .then((response) => {
-                alert(response.data)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-
-        instance.post("http://localhost:3001/test", {
-            name: String(name),
-            timestamp: String(date),
-            photo: pic,
-            description: String(desc)
-        })
-        .then((response) => {
-            console.log("fnh", response);
-          })
-          .catch((err) => {
-            throw err;
-            });
-        
-
-        setPic("") 
-        setDesc("")
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/` +
+                             `off-brand-instagram.appspot.com/o/${post}?alt=media`;
+        return imageUrl;
     }
 
-
-    const handleImageUpload = (e) => {
+    const ImageChange = (e) => {
         e.preventDefault()
-        
-        var image = document.getElementById("picture").files[0];
-        setPic(image)
-        console.log(pic)
-        var reader = new FileReader();
-
-        reader.onload = function(e) {
-        document.getElementById("display-image").src = e.target.result;
+        if(e.target.files[0]){
+            setPic(e.target.files[0])
         }
+    }
+    const ImageUpload = (e) => {
+        e.preventDefault()
 
-        reader.readAsDataURL(image);
+        /*console.log(pic.name)
+        const url = getPictureURL(pic.name)
+        var number = Math.floor(Math.random() * 100000000)
+       
+        db.collection("posts").doc(String(number)).set({
+            description: desc,
+            name: "Mo Patel",
+            photo: url,
+            timestamp: time
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });*/
 
+        
+        const uploadTask = storage.ref(`posts/${pic.name}`).put(pic)
+        
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const progress = Math.round((snapshot.byteTransferred / snapshot.totalBytes) * 100)
+                setProgress(progress)
+            },
+            (error) => {
+                console.log(error)
+                alert(error.message)
+            },
+            () => {
+                storage
+                    .ref("posts")
+                    .child(pic.name)
+                    .getDownloadURL()
+                    .then(url => {
+                        var post = {
+                            name: String(name),
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                            photo: url,
+                            description: String(desc)
+                        }
+                        setPost(post)
+                        console.log(post)
+
+                        var number = Math.floor(Math.random() * 100000000)
+       
+                        db.collection("posts").doc(String(number)).set(post)
+                            .then(function() {
+                                console.log("Document successfully written!");
+                            })
+                            .catch(function(error) {
+                                console.error("Error writing document: ", error);
+                            });
+
+
+                        setProgress(0)
+                        setDesc("")
+                        setPic(null)
+                    })
+            }
+
+        )
+            
     }
 
 
@@ -118,11 +140,12 @@ export function MakePostForm(){
                 <p id = "timestamp">{date}</p>
                 <div className = "input-forms">
                     <label className = "label-forms">Upload Photo: </label>
-                    <input id = "picture" type="file" onChange = {handleImageUpload}/>
+                    <input id = "picture" type="file" onChange = {ImageChange}/>
                     <label className = "label-forms">Description: </label>
                     <input id = "description" type="text" onChange = {(e) => {setDesc(e.target.value)}}/>
                 </div>
-                <button type = "submit" onClick = {postPicture}> Post </button>
+                <progress value = {progress} max = "100" />
+                <button type = "submit" onClick = {ImageUpload}> Post </button>
 
             </form>
 
@@ -142,21 +165,7 @@ export function NewPost(props){
 
     const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear()))
 
-    function displayPicture(pic) {
-
-        var reader = new FileReader();
-
-        reader.onload = function() {
-        document.getElementById("display-image").src = pic;
-        }
-
-        reader.readAsDataURL(pic);
-
-    }
-    //displayPicture(props.photo)
-    
-    return(
-       
+    return( 
         <div>
         
             <div className = "post-body">
@@ -167,6 +176,7 @@ export function NewPost(props){
 
                 <div className = "post-img">
                     <img id = "display-image" alt = "pic" src= {props.photo} style = {{width: "400px", height: "400px"}} />
+                    
                 </div>
 
                 <div className = "post-description">
@@ -175,9 +185,6 @@ export function NewPost(props){
 
             </div>
 
-    
         </div>
-    )
+        )  
 }
-
-//https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.xorA8_bHWQVZaLi-mGEnPQHaFk%26pid%3DApi&f=1
