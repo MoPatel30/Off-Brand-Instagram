@@ -68,8 +68,7 @@ export function MakePostForm(){
 
         /*console.log(pic.name)
         const url = getPictureURL(pic.name)
-        var number = Math.floor(Math.random() * 100000000)
-       
+
         db.collection("posts").doc(String(number)).set({
             description: desc,
             name: "Mo Patel",
@@ -85,7 +84,9 @@ export function MakePostForm(){
 
         
         const uploadTask = storage.ref(`posts/${pic.name}`).put(pic)
-        
+        const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear()))
+        var number = Math.floor(Math.random() * 100000000)
+       
         uploadTask.on(
             "state_changed",
             (snapshot) => {
@@ -104,15 +105,16 @@ export function MakePostForm(){
                     .then(url => {
                         var post = {
                             name: String(name),
-                            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                            timestamp: date,
                             photo: url,
-                            description: String(desc)
+                            description: String(desc),
+                            likes: 0,
+                            id: String(number)
                         }
-                        setPost(post)
-                        console.log(post)
+                        //setPost(post)
+                        //console.log(post)
 
-                        var number = Math.floor(Math.random() * 100000000)
-       
+
                         db.collection("posts").doc(String(number)).set(post)
                             .then(function() {
                                 console.log("Document successfully written!");
@@ -165,14 +167,26 @@ export function MakePostForm(){
 
 export function NewPost(props){
 
-    const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear()))
+    const [likes, setLikes] = useState(props.likes)
+    function likePost(postId){
+        setLikes(likes + 1)
+        db.collection("posts").doc(`${postId}`).update({likes: likes})
+            .then(function() {
+                console.log("Document successfully written!");
+            })
+            .catch(function(error) {
+                console.error("Error writing document: ", error);
+            });
+
+    }
+
 
     return( 
         <div>
             <div className = "post-body">
                 <div className = "post-header">
                     <h2>{props.user}</h2>
-                    <h2>{date}</h2>
+                    <h2>{props.timestamp}</h2>
                 </div>
 
                 <div className = "post-img">
@@ -182,6 +196,16 @@ export function NewPost(props){
 
                 <div className = "post-description">
                     <p><b> Description: </b> {props.description} </p>
+                </div>
+                
+                <div className = "post-description">
+                    <p><b> Likes: </b> {props.likes} </p>
+                </div>
+
+                <div className = "post-description">
+                    <button onClick = {() => {likePost(props.id)}}>
+                        Like Post
+                    </button>
                 </div>
             </div>
         </div>

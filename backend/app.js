@@ -50,7 +50,6 @@ app.use(express.static(path.join(__dirname, "public")))
 
 //mongoDB connection
 const connection_url = ""
-
 mongoose.connect(connection_url,{
     useCreateIndex: true,
     useNewUrlParser: true,

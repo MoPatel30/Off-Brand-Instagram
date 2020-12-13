@@ -1,12 +1,11 @@
 import firebase from "firebase"
-import * as admin from "firebase-admin"
 import 'firebase/firestore';
 import 'firebase/storage';
 
 
 firebase.initializeApp({
 
-  })
+})
   
 
 // Initialize Firebase
