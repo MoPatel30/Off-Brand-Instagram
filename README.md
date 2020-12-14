@@ -1,16 +1,18 @@
-# Off-Brand Instagram
+# PhotoShare
 
-Off-brand version of instagram where users can login and post to a universal feed. 
+Photo-sharing web-application where users can login, create profiles, and like & post to a live, universal feed. 
 
-Considering adding a comment section and a profile section for each user, but we'll see how that goes.
+
+## About
+
+This is a full-stack social media-like project where I was able to practice more on backend, learned authentication, and got better at React & its intricacies. 
+
+Initially, this web-app was supposed to have a traditional backend using Mongo, Node, and Express, but complications came up with storing/retreiving images. I soon realized migrating to Firebase and making use of Firestore & Storage was my best bet. As a side effect, all of the services I used to make this web-app functional now all reside in the same palce, Firebase. 
 
 
 ## Languages, Tools, & Services
 
 Front-end: HTML, CSS, React, Bootstrap, MaterialUI
 
-Back-end: NodeJS, Express, MongoDB, Firebase
-
-More languages, tools, and services will be added as I incorporate them! 
-
+Back-end: Firebase Hosting + Database + Firestore + Oauth
 

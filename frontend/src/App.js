@@ -30,19 +30,21 @@ function App() {
       <nav className = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <h1 style = {{color: "white", textAlign: "center"}}><i>Off-Brand Instagram</i></h1>
         <h1 style = {{color: "white", textAlign: "center"}}> Welcome, {user}!</h1>
-         
-          <Button variant="contained" cursor = "pointer" color="primary" href="#contained-buttons">
-            Feed
-          </Button>
-          <Button variant="contained" cursor = "pointer" color="primary" href="#contained-buttons">
-            Profile
-          </Button>
-          <Button variant="contained" cursor = "pointer" color="primary" href="#contained-buttons">
-            Logout
-          </Button>
-          <Button onClick = {signIn} cursor = "pointer" variant="contained" color="primary" href="#contained-buttons">
-            Login
-          </Button>
+          
+          <div className = "buttons">
+            <Button variant="contained" cursor = "pointer" color="primary" href="#contained-buttons">
+              Feed
+            </Button>
+            <Button variant="contained" cursor = "pointer" color="primary" href="#contained-buttons">
+              Profile
+            </Button>
+            <Button variant="contained" cursor = "pointer" color="primary" href="#contained-buttons">
+              Logout
+            </Button>
+            <Button onClick = {signIn} cursor = "pointer" variant="contained" color="primary" href="#contained-buttons">
+              Login
+            </Button>
+          </div>
 
       </nav>
 

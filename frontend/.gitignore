@@ -23,7 +23,9 @@
 
 .firebaserc
 
+/src/firebase.js
 
+../backend
 
 .package-lock.json
 

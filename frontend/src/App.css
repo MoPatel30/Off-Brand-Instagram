@@ -20,6 +20,13 @@
 
 }
 
+.buttons{
+  display: flex;
+  align-self: left;
+  justify-content: left;
+  
+}
+
 #feed{
   flex-direction: column;
   display: flex;
