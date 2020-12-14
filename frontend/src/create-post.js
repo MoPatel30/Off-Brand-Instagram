@@ -2,12 +2,17 @@ import React, {useState, useEffect} from "react"
 import "./create-post.css"
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import PhotoFeed from "./photo-feed"
-import axios from "axios";
 import firebase from "firebase"
 import db from "./firebase";
 import {storage} from "./firebase"
 import 'firebase/firestore';
 import 'firebase/storage';
+import TextField from '@material-ui/core/TextField';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+
 
 
 function CreatePost() {
@@ -38,24 +43,15 @@ export default CreatePost
 
 export function MakePostForm(){
     const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear())) 
+    
     const [pic, setPic] = useState(null)
     const [desc, setDesc] = useState("")
     const [name, setName] = useState("Mo Patel")
-    const [time, setTime] = useState("")
 
     const [progress, setProgress] = useState(0)
     const [post, setPost] = useState("")
-    const [hello, setHello] = useState("")
-    const [url, setUrl] = useState("")
 
 
-
-    function getPictureURL(post){
-
-        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/` +
-                             `off-brand-instagram.appspot.com/o/${post}?alt=media`;
-        return imageUrl;
-    }
 
     const ImageChange = (e) => {
         e.preventDefault()
@@ -63,39 +59,23 @@ export function MakePostForm(){
             setPic(e.target.files[0])
         }
     }
+
+
     const ImageUpload = (e) => {
         e.preventDefault()
-
-        /*console.log(pic.name)
-        const url = getPictureURL(pic.name)
-
-        db.collection("posts").doc(String(number)).set({
-            description: desc,
-            name: "Mo Patel",
-            photo: url,
-            timestamp: time
-        })
-        .then(function() {
-            console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-            console.error("Error writing document: ", error);
-        });*/
-
         
         const uploadTask = storage.ref(`posts/${pic.name}`).put(pic)
-        const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear()))
         var number = Math.floor(Math.random() * 100000000)
        
         uploadTask.on(
             "state_changed",
             (snapshot) => {
-                const progress = Math.round((snapshot.byteTransferred / snapshot.totalBytes) * 100)
-                setProgress(progress)
+                const progress1 = Math.round((snapshot.byteTransferred / snapshot.totalBytes) * 100)
+                console.log(progress1)
+                setProgress(progress1)
             },
             (error) => {
                 console.log(error)
-                alert(error.message)
             },
             () => {
                 storage
@@ -109,12 +89,10 @@ export function MakePostForm(){
                             photo: url,
                             description: String(desc),
                             likes: 0,
-                            id: String(number)
+                            id: String(number),
+                            likedBy: []
                         }
-                        //setPost(post)
-                        //console.log(post)
-
-
+     
                         db.collection("posts").doc(String(number)).set(post)
                             .then(function() {
                                 console.log("Document successfully written!");
@@ -123,10 +101,10 @@ export function MakePostForm(){
                                 console.error("Error writing document: ", error);
                             });
 
-
                         setProgress(0)
                         setDesc("")
                         setPic(null)
+
                     })
             }
 
@@ -143,18 +121,36 @@ export function MakePostForm(){
                 <div className = "input-forms">
                     <label className = "label-forms">Upload Photo: </label>
                     <input id = "picture" type="file" onChange = {ImageChange}/>
-                    <label className = "label-forms">Description: </label>
-                    <input id = "description" type="text" onChange = {(e) => {setDesc(e.target.value)}}/>
-                </div>
-                <progress value = {progress} max = "100" />
-                <button type = "submit" onClick = {ImageUpload}> Post </button>
+                    <Button
+                        variant="contained"
+                        color="default"
+                        type = "file"
+                        startIcon={<CloudUploadIcon />}
+                    >Upload Image</Button>
 
+                    <TextField
+                        className = "post-description"
+                        id="outlined-multiline-static"
+                        label="Description"
+                        multiline
+                        rows={4}
+                        defaultValue=""
+                        variant="outlined"
+                        onChange = {(e) => {setDesc(e.target.value)}}
+                    />
+              
+                </div>
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    type = "submit"
+                    onClick = {ImageUpload}
+                > Post </Button>
+            
+             
             </form>
 
-            <img id = "display-image" alt = "pic" src= "" style = {{width: "400px", height: "400px"}} />
-           
-            <p>{post}</p>
-            <p>{hello}</p>
 
         </div>
                  
@@ -162,22 +158,43 @@ export function MakePostForm(){
    
 }
 
+/*
+            <img id = "display-image" alt = "pic" src= "" style = {{width: "400px", height: "400px"}} />
+           
+            <p>{post}</p>
+
+*/
 
 
 
 export function NewPost(props){
-
     const [likes, setLikes] = useState(props.likes)
-    function likePost(postId){
-        setLikes(likes + 1)
-        db.collection("posts").doc(`${postId}`).update({likes: likes})
-            .then(function() {
-                console.log("Document successfully written!");
-            })
-            .catch(function(error) {
-                console.error("Error writing document: ", error);
-            });
+    const [likedByTheseUsers, setLikedByTheseUsers] = useState(props.likedBy)
+    
 
+    function likePost(postId){ 
+        if(likedByTheseUsers.indexOf(props.name) === -1){    
+            setLikes(likes + 1)            
+            db.collection("posts").doc(`${postId}`).update({likes: likes})
+                .then(function() {
+                    console.log("Document successfully written!");
+                })
+                .catch(function(error) {
+                    console.error("Error writing document: ", error);
+                });
+            
+            var tempLikedByTheseUsers = likedByTheseUsers
+            tempLikedByTheseUsers.push(props.name)
+            setLikedByTheseUsers(tempLikedByTheseUsers)
+
+            db.collection("posts").doc(`${postId}`).update({likedBy: likedByTheseUsers})
+                .then(function() {
+                    console.log("Document successfully written!");
+                })
+                .catch(function(error) {
+                    console.error("Error writing document: ", error);
+                });
+        }      
     }
 
 
@@ -203,7 +220,8 @@ export function NewPost(props){
                 </div>
 
                 <div className = "post-description">
-                    <button onClick = {() => {likePost(props.id)}}>
+                    <FavoriteIcon onClick = {() => {likePost(props.id)}} cursor = "pointer" />
+                    <button onClick = {() => {likePost(props.id)}} cursor = "pointer">
                         Like Post
                     </button>
                 </div>
