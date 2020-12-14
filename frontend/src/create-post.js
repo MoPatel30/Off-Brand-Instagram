@@ -15,18 +15,23 @@ import Icon from '@material-ui/core/Icon';
 
 
 
-function CreatePost() {
+function CreatePost(props) {
     const [form, setForm] = useState("")
     
     const makePost = (e) => {
         e.preventDefault()
-        setForm(<MakePostForm />)
+        setForm(<MakePostForm user = {props.user} />)
     }
 
     return (
         <div>
-            <AddBoxIcon fontSize = "large" onClick = {makePost} />
-            
+            <Button
+                variant="contained"
+                color="default"
+                onClick = {makePost}
+                startIcon={<CloudUploadIcon />}
+            >Upload Image</Button>
+
             <div>
                 <p>{form}</p>
             </div>
@@ -41,18 +46,15 @@ export default CreatePost
 
 
 
-export function MakePostForm(){
+export function MakePostForm(props){
     const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear())) 
     
     const [pic, setPic] = useState(null)
     const [desc, setDesc] = useState("")
-    const [name, setName] = useState("Mo Patel")
-
+    const [name, setName] = useState(props.user)
     const [progress, setProgress] = useState(0)
-    const [post, setPost] = useState("")
 
-
-
+ 
     const ImageChange = (e) => {
         e.preventDefault()
         if(e.target.files[0]){
@@ -115,20 +117,15 @@ export function MakePostForm(){
 
     return(
         <div className = "post-form">
-            <form type = "submit">
-                <h2 id = "username">Mo Patel</h2>
+            <form className = "form-items" type = "submit">
+                <h2 id = "username">{props.user}</h2>
                 <p id = "timestamp">{date}</p>
                 <div className = "input-forms">
-                    <label className = "label-forms">Upload Photo: </label>
-                    <input id = "picture" type="file" onChange = {ImageChange}/>
-                    <Button
-                        variant="contained"
-                        color="default"
-                        type = "file"
-                        startIcon={<CloudUploadIcon />}
-                    >Upload Image</Button>
-
+                    <label className = "label-forms">Upload Photo: </label>                   
+                    <input style = {{marginBottom: "25px"}} id = "picture" type="file" onChange = {ImageChange}/>
+                   
                     <TextField
+                        style = {{marginBottom: "15px"}}
                         className = "post-description"
                         id="outlined-multiline-static"
                         label="Description"
@@ -147,10 +144,8 @@ export function MakePostForm(){
                     type = "submit"
                     onClick = {ImageUpload}
                 > Post </Button>
-            
-             
+                        
             </form>
-
 
         </div>
                  
@@ -202,8 +197,8 @@ export function NewPost(props){
         <div>
             <div className = "post-body">
                 <div className = "post-header">
-                    <h2>{props.user}</h2>
-                    <h2>{props.timestamp}</h2>
+                    <h2 className = "post-text" style = {{paddingLeft: "5px"}}>{props.name}</h2>
+                    <h2 className = "post-text" style = {{paddingRight: "5px"}}>{props.timestamp}</h2>
                 </div>
 
                 <div className = "post-img">
@@ -212,18 +207,13 @@ export function NewPost(props){
                 </div>
 
                 <div className = "post-description">
-                    <p><b> Description: </b> {props.description} </p>
+                    <p><b>Description: </b> {props.description} </p>
                 </div>
                 
-                <div className = "post-description">
-                    <p><b> Likes: </b> {props.likes} </p>
-                </div>
-
-                <div className = "post-description">
-                    <FavoriteIcon onClick = {() => {likePost(props.id)}} cursor = "pointer" />
-                    <button onClick = {() => {likePost(props.id)}} cursor = "pointer">
-                        Like Post
-                    </button>
+                <div className = "post-likes">                   
+                    <p style = {{paddingLeft: "5px"}}><b> Likes: </b> {props.likes} </p> 
+                    <FavoriteIcon  onClick = {() => {likePost(props.id)}} cursor = "pointer" />
+                  
                 </div>
             </div>
         </div>

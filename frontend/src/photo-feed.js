@@ -8,7 +8,6 @@ import db from "./firebase"
 export function PhotoFeed(props) {
 
     const [fbPost, setFbPost] = useState([])
-    const [id, setId] = [""]
 
 
     useEffect(() => {
@@ -28,6 +27,10 @@ export function PhotoFeed(props) {
             fbPost.map((post) => (
                 <NewPost name = {props.user} id = {post.id} photo = {post.photo} description = {post.description} user = {post.name} timestamp = {post.timestamp} likes = {post.likes} likedBy = {post.likedBy} />    
             ))} 
+
+            <div style = {{marginBottom: "125px"}}>
+                <p> </p>
+            </div>
            
         </div>
     )
