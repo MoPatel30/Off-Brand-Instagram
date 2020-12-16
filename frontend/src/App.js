@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import './App.css';
-import CreatePost, {NewPost} from "./create-post"
+import CreatePost, {MakePostForm, NewPost} from "./create-post"
 import {PhotoFeed} from "./photo-feed";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {auth, provider} from "./firebase"
@@ -23,6 +23,22 @@ function App() {
     })
   }
 
+  const [form, setForm] = useState(null)
+  const [submitted, setSubmitted] = useState(false)
+
+  const makePost = (e) => {
+      e.preventDefault()
+      if(!submitted){
+          setForm(<MakePostForm user = {user} />)
+          setSubmitted(true)
+      }
+      else{
+          setForm(null)
+          setSubmitted(false)
+      }
+
+  }
+
 
   return (
     <div className="App">
@@ -32,6 +48,9 @@ function App() {
           <h1 style = {{color: "white", textAlign: "center", fontSize: "1.5rem"}}> Welcome, {user}!</h1>
             
             <div className = "buttons">
+            <Button onClick = {makePost} className = "buttons" variant="contained" cursor = "pointer" color="secondary" href="">
+                Post
+              </Button>
               <Button className = "buttons" variant="contained" cursor = "pointer" color="primary" href="">
                 Feed
               </Button>
@@ -50,12 +69,13 @@ function App() {
 
       <div className = "App-body">
 
-        <div id = "post-btn">
-          <CreatePost user = {user} /> 
-        </div>
 
         <div id = "feed">
           <PhotoFeed user = {user} />
+        </div>
+
+        <div>
+          {form}
         </div>
         
       </div>

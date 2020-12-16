@@ -132,7 +132,7 @@ export function MakePostForm(props){
 
     return(
         <div id = "form" className = "post-form">
-            <form className = "form-items" type = "submit">
+            <form className = "form-items">
                 <h2 id = "username">{props.user}</h2>
                 <p id = "timestamp">{date}</p>
                 <div className = "input-forms">
@@ -225,11 +225,11 @@ export function NewPost(props){
                 </div>
 
                 <div className = "post-description">
-                    <p><b>Description: </b> {props.description} </p>
+                    <p id = "description-text"><b>Description: </b> {props.description} </p>
                 </div>
                 
                 <div className = "post-likes">                   
-                    <p style = {{paddingLeft: "5px"}}><b> Likes: </b> {props.likes} </p> 
+                    <p id = "likes-text"><b> Likes: </b> {props.likes} </p> 
                     <FavoriteIcon  onClick = {() => {likePost(props.id)}} cursor = "pointer" />
                   
                 </div>
