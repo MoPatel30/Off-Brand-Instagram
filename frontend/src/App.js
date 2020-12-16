@@ -28,8 +28,8 @@ function App() {
     <div className="App">
       <div className = "header">
         <nav id = "header" className = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-          <h1 style = {{color: "white", textAlign: "center"}}><i>Off-Brand Instagram</i></h1>
-          <h1 style = {{color: "white", textAlign: "center"}}> Welcome, {user}!</h1>
+          <h1 style = {{color: "white", textAlign: "center", fontSize: "2rem"}}><i>Off-Brand Instagram</i></h1>
+          <h1 style = {{color: "white", textAlign: "center", fontSize: "1.5rem"}}> Welcome, {user}!</h1>
             
             <div className = "buttons">
               <Button className = "buttons" variant="contained" cursor = "pointer" color="primary" href="">

@@ -6,9 +6,6 @@ import 'firebase/storage';
 firebase.initializeApp({
 
 })
-  
-
-
 
 
 // Initialize Firebase

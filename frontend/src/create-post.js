@@ -17,14 +17,23 @@ import Icon from '@material-ui/core/Icon';
 
 function CreatePost(props) {
     const [form, setForm] = useState("")
-    
+    const [submitted, setSubmitted] = useState(false)
+
     const makePost = (e) => {
         e.preventDefault()
-        setForm(<MakePostForm user = {props.user} />)
+        if(!submitted){
+            setForm(<MakePostForm user = {props.user} />)
+            setSubmitted(true)
+        }
+        else{
+            setForm(null)
+            setSubmitted(false)
+        }
+
     }
 
     return (
-        <div>
+        <div className = "upload-btn">
             <Button
                 variant="contained"
                 color="default"
@@ -111,12 +120,18 @@ export function MakePostForm(props){
             }
 
         )
+        document.getElementById("form").style.visibility = "hidden";
             
     }
 
 
+    function closeForm(){
+        document.getElementById("form").style.visibility = "hidden";
+    }
+
+
     return(
-        <div className = "post-form">
+        <div id = "form" className = "post-form">
             <form className = "form-items" type = "submit">
                 <h2 id = "username">{props.user}</h2>
                 <p id = "timestamp">{date}</p>
@@ -137,6 +152,11 @@ export function MakePostForm(props){
                     />
               
                 </div>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick = {closeForm}
+                > Close </Button>
 
                 <Button
                     variant="contained"
@@ -145,8 +165,7 @@ export function MakePostForm(props){
                     onClick = {ImageUpload}
                 > Post </Button>
                         
-            </form>
-
+            </form>        
         </div>
                  
     )
@@ -159,7 +178,6 @@ export function MakePostForm(props){
             <p>{post}</p>
 
 */
-
 
 
 export function NewPost(props){
@@ -202,7 +220,7 @@ export function NewPost(props){
                 </div>
 
                 <div className = "post-img">
-                    <img id = "display-image" alt = "pic" src= {props.photo} style = {{width: "400px", height: "400px"}} />
+                    <img id = "display-image" alt = "pic" src= {props.photo} />
                     
                 </div>
 
@@ -219,4 +237,37 @@ export function NewPost(props){
         </div>
     
     )  
+}
+
+
+
+export function Modal(){
+
+    return(
+        <div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            Launch demo modal
+            </button>
+
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
 }

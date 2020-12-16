@@ -1,11 +1,26 @@
 .feed{
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-    flex: 0.8;
+    flex: 1;
     height: 100vh;
-    overflow-y: scroll;
-    position: fixed;
+    bottom:0;
+    position:fixed;
+    overflow-y:scroll;
+    overflow-x:hidden;
     top: 150px;
 
 }
 
+
+@media only screen and (min-width : 1px) and (max-width: 767px){
+    body{
+        font-size: 6px;
+    }
+  .feed{
+      top: 210px;
+      left: 0px;
+  }
+    
+}
