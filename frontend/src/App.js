@@ -1,12 +1,13 @@
 import React, {useState} from "react"
 import './App.css';
-import CreatePost, {MakePostForm, NewPost} from "./create-post"
+import MakePostForm, {CreatePost, NewPost} from "./create-post"
 import {PhotoFeed} from "./photo-feed";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {auth, provider} from "./firebase"
 import Button from '@material-ui/core/Button';
 import Login from './Login'
 import {connect} from 'react-redux';
+import Profile from "./Profile";
 
 
 
@@ -15,7 +16,7 @@ function App({ username }) {
   const [form, setForm] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   console.log(username)
-
+  const [profile, setProfile] = useState(false)
 
   const makePost = (e) => {
       e.preventDefault()
@@ -30,6 +31,13 @@ function App({ username }) {
 
   }
 
+  const showProfile = (e) => {
+    e.preventDefault()
+    setProfile(true)
+
+  }
+
+
 
   return (
     <div className="App">
@@ -37,7 +45,7 @@ function App({ username }) {
       <div className = "header">
         <nav id = "header" className = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
           
-          <h1 style = {{color: "white", textAlign: "center", fontSize: "2rem"}}><i>Off-Brand Instagram</i></h1>
+          <h1 style = {{color: "white", textAlign: "left", fontSize: "2rem"}}><i>PhotoShare</i></h1>
           <h1 style = {{color: "white", textAlign: "center", fontSize: "1.5rem"}}> Welcome, {username}!</h1>
  
             <div className = "buttons">
@@ -47,7 +55,7 @@ function App({ username }) {
               <Button className = "buttons" variant="contained" cursor = "pointer" color="primary" href="">
                 Feed
               </Button>
-              <Button className = "buttons" variant="contained" cursor = "pointer" color="primary" href="">
+              <Button onClick = {showProfile} className = "buttons" variant="contained" cursor = "pointer" color="primary" href="">
                 Profile
               </Button>
               <Button className = "buttons" variant="contained" cursor = "pointer" color="secondary" href="/login">
@@ -74,6 +82,15 @@ function App({ username }) {
         <div>
           {form}
         </div>
+        
+        {
+        profile ? 
+          <Profile />
+        :(
+           <p>f</p>
+        )
+        }
+     
       </div>     
    
     </div>

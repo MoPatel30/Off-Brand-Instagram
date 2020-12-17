@@ -12,10 +12,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
+import {connect} from 'react-redux';
 
 
 
-function CreatePost(props) {
+export function CreatePost(props) {
     const [form, setForm] = useState("")
     const [submitted, setSubmitted] = useState(false)
 
@@ -49,13 +50,11 @@ function CreatePost(props) {
     )
 }
 
-export default CreatePost
 
 
 
 
-
-export function MakePostForm(props){
+function MakePostForm(props, {userID}){
     const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear())) 
     
     const [pic, setPic] = useState(null)
@@ -120,8 +119,24 @@ export function MakePostForm(props){
             }
 
         )
+
+        updateUserPostCount()
         document.getElementById("form").style.visibility = "hidden";
             
+    }
+
+
+    function updateUserPostCount(){
+
+        var posts = db.collection("posts").doc(userID).get("posts")
+        console.log(posts)
+        db.collection("profiles").doc(userID).update({posts: posts + 1})
+            .then(function() {
+                console.log("Document successfully written!");
+            })
+            .catch(function(error) {
+                console.error("Error writing document: ", error);
+            });
     }
 
 
@@ -172,12 +187,15 @@ export function MakePostForm(props){
    
 }
 
-/*
-            <img id = "display-image" alt = "pic" src= "" style = {{width: "400px", height: "400px"}} />
-           
-            <p>{post}</p>
 
-*/
+const mapStateToProps = state => {
+    return {userID: state.userID}
+  }
+  
+  
+  export default connect(mapStateToProps)(MakePostForm);
+
+  
 
 
 export function NewPost(props){

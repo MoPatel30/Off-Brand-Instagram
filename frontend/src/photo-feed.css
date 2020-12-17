@@ -4,12 +4,13 @@
     justify-content: center;
     flex-direction: column;
     flex: 1;
-    height: 100vh;
-    bottom:0;
-    position:fixed;
+  
+    position: absolute;
     overflow-y:scroll;
     overflow-x:hidden;
-    top: 150px;
+    white-space: no-wrap;
+    top: 75px;
+    height: 90vh;
 
 }
 
@@ -19,7 +20,7 @@
         font-size: 6px;
     }
   .feed{
-      top: 210px;
+      top: 135px;
       left: 0px;
   }
     

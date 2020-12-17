@@ -4,10 +4,13 @@ import {auth, provider} from "./firebase"
 import App from "./App"
 import {connect} from "react-redux"
 import store from "./store/index"
+import db from "./firebase"
+import firebase from "firebase"
 
 
 function Login() {
-    const [user, setUser] = useState("")
+    const [userID, setUserID] = useState("")
+
 
     function signIn(){
         auth
@@ -15,17 +18,61 @@ function Login() {
         .then((result) =>{
           console.log(result)
           console.log(result.user.displayName)
-          setUser(result.user.displayName)  
-          updateState(result.user.displayName)       
+        
+          createProfile(result.user.displayName)    
+          updateState(result.user.displayName, result.user.photoURL, userID)            
         })     
     }
 
 
-    function updateState(name){
+    function createProfile(username){
+        
+        let newProfile = true;
+        
+        const post = {
+            username: username,
+            bio: "",
+            liked: 0,
+            posts: 0
+        }
+
+        db.collection("profiles").get().then((doc) => {
+            doc.forEach((info) => {
+                console.log(info.id)
+                console.log(info.data().username)
+           
+                if(info.data().username === username){
+                    newProfile = false
+                }        
+            })
+        })
+
+        var number = Math.floor(Math.random() * 100000000)
+
+        if(newProfile){
+            db.collection("profiles").doc(String(number)).set(post)
+                .then(function() {
+                    console.log("Document successfully written!");
+                })
+                .catch(function(error) {
+                    console.error("Error writing document: ", error);
+                });
+        }
+        setUserID(String(number))
+
+    }
+
+
+    function updateState(name, photoURL, userID){
         console.log(name)
         store.dispatch({
             type: "ADD_POST",
-            payload: name
+            payload:
+            {   
+                username: name,
+                userphoto: photoURL,
+                userID: userID           
+            }
           })
     }
 
