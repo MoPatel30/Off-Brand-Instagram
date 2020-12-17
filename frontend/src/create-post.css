@@ -2,6 +2,10 @@
     font-family: "Poppins", sans-serif;
 }
 
+body{
+    font-size: 12px;
+}
+
 .post-body{
     border: 2px solid grey;
     margin-bottom: 75px;
@@ -133,11 +137,13 @@
         top: 250px;
         left: 2.5%;
     }
-
     #likes-text{
         font-size: 1.5rem;
     }
     #description-text{
+        font-size: 1.5rem;
+    }
+    #timestamp{
         font-size: 1.5rem;
     }
 }

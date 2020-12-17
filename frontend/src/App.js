@@ -5,31 +5,22 @@ import {PhotoFeed} from "./photo-feed";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {auth, provider} from "./firebase"
 import Button from '@material-ui/core/Button';
+import Login from './Login'
+import {connect} from 'react-redux';
 
 
 
-function App() {
-  const [user, setUser] = useState("")
-
-
-  const signIn = () => {
-    auth
-      .signInWithPopup(provider)
-      .then((result) =>{
-        console.log(result)
-        console.log(result.user.displayName)
-        setUser(result.user.displayName)
-        
-    })
-  }
-
+function App({ username }) {
+  // const [user, setUser] = useState(username)
   const [form, setForm] = useState(null)
   const [submitted, setSubmitted] = useState(false)
+  console.log(username)
+
 
   const makePost = (e) => {
       e.preventDefault()
       if(!submitted){
-          setForm(<MakePostForm user = {user} />)
+          setForm(<MakePostForm user = {username} />)
           setSubmitted(true)
       }
       else{
@@ -42,11 +33,13 @@ function App() {
 
   return (
     <div className="App">
+      { username ? 
       <div className = "header">
         <nav id = "header" className = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+          
           <h1 style = {{color: "white", textAlign: "center", fontSize: "2rem"}}><i>Off-Brand Instagram</i></h1>
-          <h1 style = {{color: "white", textAlign: "center", fontSize: "1.5rem"}}> Welcome, {user}!</h1>
-            
+          <h1 style = {{color: "white", textAlign: "center", fontSize: "1.5rem"}}> Welcome, {username}!</h1>
+ 
             <div className = "buttons">
             <Button onClick = {makePost} className = "buttons" variant="contained" cursor = "pointer" color="secondary" href="">
                 Post
@@ -60,31 +53,40 @@ function App() {
               <Button className = "buttons" variant="contained" cursor = "pointer" color="secondary" href="/login">
                 Logout
               </Button>
-              <Button className = "buttons"  onClick = {signIn} cursor = "pointer" variant="contained" color="primary" href="">
-                Login
-              </Button>
             </div>        
         </nav>
       </div>
+        :(
+          <Login />
+        )
+      }
 
+      
       <div className = "App-body">
-
-
+      { username ? 
         <div id = "feed">
-          <PhotoFeed user = {user} />
+          <PhotoFeed user = {username} />
         </div>
-
+        :(
+          <p></p>
+        )
+      }
         <div>
           {form}
         </div>
-        
-      </div>
-    
+      </div>     
+   
     </div>
-  );
+  )
 }
 
-export default App;
+
+const mapStateToProps = state => {
+  return {username: state.username}
+}
+
+
+export default connect(mapStateToProps)(App);
 
 
 /*
