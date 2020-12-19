@@ -15,7 +15,6 @@ function App({ username }) {
   // const [user, setUser] = useState(username)
   const [form, setForm] = useState(null)
   const [submitted, setSubmitted] = useState(false)
-  console.log(username)
   const [profile, setProfile] = useState(false)
 
   const makePost = (e) => {
@@ -33,7 +32,12 @@ function App({ username }) {
 
   const showProfile = (e) => {
     e.preventDefault()
-    setProfile(true)
+    if(!profile){
+      setProfile(true)
+    }
+    else{
+      setProfile(false)
+    }
 
   }
 
@@ -46,6 +50,7 @@ function App({ username }) {
         <nav id = "header" className = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
           
           <h1 style = {{color: "white", textAlign: "left", fontSize: "2rem"}}><i>PhotoShare</i></h1>
+          
           <h1 style = {{color: "white", textAlign: "center", fontSize: "1.5rem"}}> Welcome, {username}!</h1>
  
             <div className = "buttons">

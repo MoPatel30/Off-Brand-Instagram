@@ -3,12 +3,14 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    height: 70vh;
+    height: fit-content;
     width: fit-content;
+    max-width: 70vh;
     padding: 25px;
     top: 80px;
     border: 3px solid grey;
     border-radius: 25px 25px 25px 25px;
+    box-shadow: -1px 10px 20px -6px rgba(0, 0, 0, 0.75);
     
 }
 
@@ -33,4 +35,20 @@
 
 .profile-info{
     margin-bottom: 50px;
+    font-size: 1.25rem;
+}
+
+@media only screen and (min-width : 1px) and (max-width: 767px){
+
+    body{
+        font-size: 6px;
+    }
+
+    .bio{
+        font-size: 1rem;
+    }
+
+    .profile-info{
+        font-size: 1rem;
+    }
 }

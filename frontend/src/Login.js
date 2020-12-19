@@ -1,55 +1,106 @@
 import React, {useState} from 'react'
 import "./Login.css";
 import {auth, provider} from "./firebase"
-import App from "./App"
 import {connect} from "react-redux"
 import store from "./store/index"
 import db from "./firebase"
-import firebase from "firebase"
+
 
 
 function Login() {
-    const [userID, setUserID] = useState("")
+
+    //const [userID, setUserID] = useState("")
 
 
     function signIn(){
         auth
         .signInWithPopup(provider)
         .then((result) =>{
-          console.log(result)
-          console.log(result.user.displayName)
-        
-          createProfile(result.user.displayName)    
-          updateState(result.user.displayName, result.user.photoURL, userID)            
+
+          if(!checkForProfile(result.user.displayName)){
+            var profileNames = []
+
+            db.collection("profiles").get().then((doc) => {
+                doc.forEach((info) => {       
+                    profileNames.push(info)
+                })
+    
+                for(let i = 0; i < profileNames.length; i++){
+                    var userInfo = profileNames[i]
+                    if(userInfo.data().username === result.user.displayName){
+                        store.dispatch({
+                            type: "ADD_POST",
+                            payload:
+                            {   
+                                username: userInfo.data().username,
+                                userphoto: result.user.photoURL,
+                                userID: userInfo.id,
+                                liked: userInfo.data().liked,
+                                posts: userInfo.data().posts,
+                                bio: userInfo.data().bio
+                                      
+                            }
+                          })
+                          console.log(userInfo.data().username)
+                          console.log(result.user.photoURL)
+                          console.log(userInfo.id)
+                          console.log(userInfo.data().liked)
+                          console.log(userInfo.data().posts)
+                          console.log(userInfo.data().bio)
+                    }
+                }
+
+            })
+            
+ 
+          }
+          else{
+              var userId = createProfile(result.user.displayName)
+              updateState(result.user.displayName, result.user.photoURL, userId)         
+          }
+    
         })     
     }
 
 
-    function createProfile(username){
+    function checkForProfile(username){
         
-        let newProfile = true;
-        
-        const post = {
-            username: username,
-            bio: "",
-            liked: 0,
-            posts: 0
-        }
+        let profileNames = []
+        let isNewProfile = true
 
         db.collection("profiles").get().then((doc) => {
-            doc.forEach((info) => {
-                console.log(info.id)
-                console.log(info.data().username)
-           
-                if(info.data().username === username){
-                    newProfile = false
-                }        
+            doc.forEach((info) => {       
+                profileNames.push(info.data().username)
             })
+
+            for(let i = 0; i < profileNames.length; i++){
+                var name = profileNames[i]
+                if(name === username){
+                    isNewProfile = false
+                }
+            }
+            return isNewProfile
         })
 
-        var number = Math.floor(Math.random() * 100000000)
 
-        if(newProfile){
+    }
+
+
+    function createProfile(username){
+
+        const post = {
+            username: username,
+            bio: "Edit your bio",
+            liked: 3,
+            posts: 3
+        }      
+   
+        var doesProfileNotExist = checkForProfile(username)
+        
+        var number = Math.floor(Math.random() * 999999999)
+
+        if(doesProfileNotExist){
+          
             db.collection("profiles").doc(String(number)).set(post)
                 .then(function() {
                     console.log("Document successfully written!");
@@ -58,20 +109,26 @@ function Login() {
                     console.error("Error writing document: ", error);
                 });
         }
-        setUserID(String(number))
+
+        //setUserID(String(number))
+        return String(number)
 
     }
 
 
-    function updateState(name, photoURL, userID){
-        console.log(name)
+    function updateState(name, photoURL, userId){
+       
         store.dispatch({
             type: "ADD_POST",
             payload:
             {   
                 username: name,
                 userphoto: photoURL,
-                userID: userID           
+                userID: userId,
+                liked: 0,
+                posts: 0,
+                bio: "Edit your own personal bio!"
+                      
             }
           })
     }
@@ -81,6 +138,7 @@ function Login() {
         <div id = "login-pos">
             <div className = "login-screen">
                 <h1 id = "welcome"><i>Welcome to PhotoShare</i></h1>
+                <p id = "slogan"><i>Share your moments with the world</i></p>
                 <h2 id = "title"> Sign In </h2>
                 <button id = "google-btn" onClick = {signIn}>Google</button>
             </div>
@@ -96,3 +154,5 @@ const mapDispatchToProps = dispatch => {
     }
 }
 export default connect(mapDispatchToProps)(Login)
+
+

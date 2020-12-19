@@ -4,7 +4,10 @@ import {createStore} from "redux"
 const initialState = {
     username: "",
     userPhoto: "",
-    userID: ""
+    userID: "", 
+    liked: 0,
+    posts: 0,
+    bio: ""
 }
 
 const reducer = (state = initialState, action) => {
@@ -12,8 +15,12 @@ const reducer = (state = initialState, action) => {
         return Object.assign({}, state, {
             username : action.payload.username,
             userPhoto: action.payload.userphoto,
-            userID: action.payload.userID
+            userID: action.payload.userID,
+            liked: action.payload.liked,
+            posts: action.payload.posts,
+            bio: action.payload.bio
         })
+
     }
 
     return state

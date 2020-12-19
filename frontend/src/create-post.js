@@ -1,8 +1,5 @@
 import React, {useState, useEffect} from "react"
 import "./create-post.css"
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import PhotoFeed from "./photo-feed"
-import firebase from "firebase"
 import db from "./firebase";
 import {storage} from "./firebase"
 import 'firebase/firestore';
@@ -11,8 +8,8 @@ import TextField from '@material-ui/core/TextField';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 import {connect} from 'react-redux';
+
 
 
 
@@ -54,14 +51,13 @@ export function CreatePost(props) {
 
 
 
-function MakePostForm(props, {userID}){
+function MakePostForm({userID, posts, username}){
     const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear())) 
-    
     const [pic, setPic] = useState(null)
     const [desc, setDesc] = useState("")
-    const [name, setName] = useState(props.user)
+    const [name, setName] = useState(username)
     const [progress, setProgress] = useState(0)
-
+    console.log(userID)
  
     const ImageChange = (e) => {
         e.preventDefault()
@@ -76,7 +72,7 @@ function MakePostForm(props, {userID}){
         
         const uploadTask = storage.ref(`posts/${pic.name}`).put(pic)
         var number = Math.floor(Math.random() * 100000000)
-       
+        updateUserPostCount(userID)
         uploadTask.on(
             "state_changed",
             (snapshot) => {
@@ -120,16 +116,13 @@ function MakePostForm(props, {userID}){
 
         )
 
-        updateUserPostCount()
         document.getElementById("form").style.visibility = "hidden";
             
     }
 
 
-    function updateUserPostCount(){
-
-        var posts = db.collection("posts").doc(userID).get("posts")
-        console.log(posts)
+    function updateUserPostCount(userID){
+        console.log(userID)
         db.collection("profiles").doc(userID).update({posts: posts + 1})
             .then(function() {
                 console.log("Document successfully written!");
@@ -148,7 +141,7 @@ function MakePostForm(props, {userID}){
     return(
         <div id = "form" className = "post-form">
             <form className = "form-items">
-                <h2 id = "username">{props.user}</h2>
+                <h2 id = "username">{username}</h2>
                 <p id = "timestamp">{date}</p>
                 <div className = "input-forms">
                     <label className = "label-forms">Upload Photo: </label>                   
@@ -189,13 +182,20 @@ function MakePostForm(props, {userID}){
 
 
 const mapStateToProps = state => {
-    return {userID: state.userID}
-  }
+    return {
+        username: state.username,
+        userID: state.userID,
+        posts: state.posts
+    }
+}
   
   
-  export default connect(mapStateToProps)(MakePostForm);
+export default connect(mapStateToProps)(MakePostForm);
 
   
+
+
+
 
 
 export function NewPost(props){
@@ -257,35 +257,3 @@ export function NewPost(props){
     )  
 }
 
-
-
-export function Modal(){
-
-    return(
-        <div>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-            Launch demo modal
-            </button>
-
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}

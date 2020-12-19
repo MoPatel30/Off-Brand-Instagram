@@ -8,21 +8,33 @@ import 'firebase/storage';
 
 
 
-function Profile({ username, userPhoto }) {
-    const [bio, setBio] = useState(false)
+function Profile({ username, userID, userPhoto, liked, posts, bio }) {
+    const [editBio, setEditBio] = useState(false)
     const [desc, setDesc] = useState("This is my bio")
 
-    function editBio(){
-        if(!bio){
-            setBio(true)
+    function changeBio(){
+        if(!editBio){
+            setEditBio(true)
         }
         else{
-            setBio(false)
+            setEditBio(false)
         }
     }
 
+    function updateBio(){
+        db.collection("profiles")    
+            .doc(userID).update({bio: desc})
+                .then(function() {
+                    console.log("Document successfully written!");
+                })
+                .catch(function(error) {
+                    console.error("Error writing document: ", error);
+                });
+    }
+
+
     return (
-        <div className = "profile-body" style = {{backgroundColor: "#ecf3f9"}}>
+        <div className = "profile-body" style = {{backgroundColor: "#f8f9f5"}}>
             <h1 style = {{marginBottom: "20px"}}>{username}'s Profile</h1>
 
             <div className = "user-picture">
@@ -31,12 +43,12 @@ function Profile({ username, userPhoto }) {
 
        
             <div className = "bio">
-                <p>{desc}</p>
-                <button onClick = {editBio}>Edit Bio</button>
-                {bio ? 
+                <p>{bio}</p>
+                <button onClick = {changeBio}>Edit Bio</button>
+                {editBio ? 
                     <div>
                         <input type = "text" onChange = {(e) => {setDesc(e.target.value)}}></input>
-                        <button onClick = {editBio}>Update</button>
+                        <button onClick = {updateBio}>Update</button>
                     </div>
               
                     :(
@@ -46,11 +58,11 @@ function Profile({ username, userPhoto }) {
             </div>
 
             <div className = "profile-info">
-                <p>{username} has 0 posts</p>
+                <p>{username} has {posts} posts</p>
             </div>
 
             <div className = "profile-info">
-                <p>{username} has liked 0 posts</p>
+                <p>{username} has liked {liked} posts</p>
             </div>
             
 
@@ -64,7 +76,11 @@ function Profile({ username, userPhoto }) {
 const mapStateToProps = state => {
     return {
         username: state.username,
-        userPhoto: state.userPhoto
+        userPhoto: state.userPhoto,
+        userID: state.userID,
+        liked: state.liked,
+        posts: state.posts,
+        bio: state.bio
     }
   }
   
