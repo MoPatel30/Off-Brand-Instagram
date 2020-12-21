@@ -33,7 +33,9 @@ body{
 .buttons{
   display: inline;
   align-items: right;
+
 }
+
 .buttons::hover{
   padding-left: -10px;
   padding-right: -10px; 
@@ -54,9 +56,26 @@ body{
 
 }
 
+#welcome-header{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 60%;
+}
+
+#title-header{
+  display: inline-block;
+  justify-self: left;
+  
+}
+
+
 @media only screen and (min-width : 1px) and (max-width: 767px){
   body{
       font-size: 6px;
+  }
+  #welcome-header{
+    width: 100%;
   }
 
 }

@@ -55,10 +55,10 @@ function MakePostForm({userID, posts, username}){
     const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear())) 
     const [pic, setPic] = useState(null)
     const [desc, setDesc] = useState("")
-    const [name, setName] = useState(username)
-    const [progress, setProgress] = useState(0)
+    
     console.log(userID)
  
+
     const ImageChange = (e) => {
         e.preventDefault()
         if(e.target.files[0]){
@@ -76,9 +76,7 @@ function MakePostForm({userID, posts, username}){
         uploadTask.on(
             "state_changed",
             (snapshot) => {
-                const progress1 = Math.round((snapshot.byteTransferred / snapshot.totalBytes) * 100)
-                console.log(progress1)
-                setProgress(progress1)
+                console.log("posting")
             },
             (error) => {
                 console.log(error)
@@ -90,7 +88,7 @@ function MakePostForm({userID, posts, username}){
                     .getDownloadURL()
                     .then(url => {
                         var post = {
-                            name: String(name),
+                            name: username,
                             timestamp: date,
                             photo: url,
                             description: String(desc),
@@ -107,7 +105,6 @@ function MakePostForm({userID, posts, username}){
                                 console.error("Error writing document: ", error);
                             });
 
-                        setProgress(0)
                         setDesc("")
                         setPic(null)
 
@@ -257,3 +254,33 @@ export function NewPost(props){
     )  
 }
 
+
+
+
+export function ModalPost(){
+
+    return(
+        <div>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+        
+            <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+            
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+            
+            </div>
+            </div>
+        </div>
+    )
+}

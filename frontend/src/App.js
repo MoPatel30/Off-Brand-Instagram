@@ -1,9 +1,8 @@
 import React, {useState} from "react"
 import './App.css';
-import MakePostForm, {CreatePost, NewPost} from "./create-post"
+import MakePostForm, { ModalPost} from "./create-post"
 import {PhotoFeed} from "./photo-feed";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {auth, provider} from "./firebase"
 import Button from '@material-ui/core/Button';
 import Login from './Login'
 import {connect} from 'react-redux';
@@ -49,9 +48,13 @@ function App({ username }) {
       <div className = "header">
         <nav id = "header" className = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
           
-          <h1 style = {{color: "white", textAlign: "left", fontSize: "2rem"}}><i>PhotoShare</i></h1>
-          
-          <h1 style = {{color: "white", textAlign: "center", fontSize: "1.5rem"}}> Welcome, {username}!</h1>
+          <div id = "title-header">
+            <h1 style = {{color: "white", textAlign: "left", fontSize: "2rem"}}><i>PhotoShare</i></h1>
+          </div>
+
+          <div id = "welcome-header">
+            <h1 style = {{color: "white", textAlign: "center", fontSize: "1.5rem"}}> Welcome, {username}!</h1>
+          </div>
  
             <div className = "buttons">
             <Button onClick = {makePost} className = "buttons" variant="contained" cursor = "pointer" color="secondary" href="">
@@ -66,7 +69,8 @@ function App({ username }) {
               <Button className = "buttons" variant="contained" cursor = "pointer" color="secondary" href="/login">
                 Logout
               </Button>
-            </div>        
+            </div>   
+                 
         </nav>
       </div>
         :(

@@ -20,7 +20,7 @@ function Login() {
           if(!checkForProfile(result.user.displayName)){
             var profileNames = []
 
-            db.collection("profiles").get().then((doc) => {
+            db.collection("profiles").onSnapshot(function(doc) {
                 doc.forEach((info) => {       
                     profileNames.push(info)
                 })
