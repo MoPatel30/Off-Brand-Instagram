@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import './App.css';
-import MakePostForm, { ModalPost} from "./create-post"
-import {PhotoFeed} from "./photo-feed";
+import MakePostForm from "./create-post"
+import PhotoFeed from "./photo-feed";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from '@material-ui/core/Button';
 import Login from './Login'
@@ -57,11 +57,8 @@ function App({ username }) {
           </div>
  
             <div className = "buttons">
-            <Button onClick = {makePost} className = "buttons" variant="contained" cursor = "pointer" color="secondary" href="">
+            <Button onClick = {makePost} className = "buttons" variant="contained" cursor = "pointer" color="primary" href="">
                 Post
-              </Button>
-              <Button className = "buttons" variant="contained" cursor = "pointer" color="primary" href="">
-                Feed
               </Button>
               <Button onClick = {showProfile} className = "buttons" variant="contained" cursor = "pointer" color="primary" href="">
                 Profile

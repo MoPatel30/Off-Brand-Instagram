@@ -10,6 +10,7 @@ body{
     border: 2px solid grey;
     margin-bottom: 75px;
     border-radius: 10px 10px 10px 10px;
+    z-index: 1;
    
 }
 
@@ -63,7 +64,7 @@ body{
     background-color: lightgray; 
     top: 150px; 
     right: 100px;
-    transition: 2.0s ease;
+    transition: 0.2s ease;
 }
 
 #form{

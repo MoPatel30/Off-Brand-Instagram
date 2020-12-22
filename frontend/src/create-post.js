@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState} from "react"
 import "./create-post.css"
 import db from "./firebase";
 import {storage} from "./firebase"
@@ -9,6 +9,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux';
+import {ViewProfiles} from './Profile'
 
 
 
@@ -132,6 +133,8 @@ function MakePostForm({userID, posts, username}){
 
     function closeForm(){
         document.getElementById("form").style.visibility = "hidden";
+        setDesc("")
+        setPic(null)
     }
 
 
@@ -198,12 +201,13 @@ export default connect(mapStateToProps)(MakePostForm);
 export function NewPost(props){
     const [likes, setLikes] = useState(props.likes)
     const [likedByTheseUsers, setLikedByTheseUsers] = useState(props.likedBy)
-    
+    const [profile, setProfile] = useState(null)
+    const [showPost, setShowPost] = useState(true)
 
     function likePost(postId){ 
         if(likedByTheseUsers.indexOf(props.name) === -1){    
             setLikes(likes + 1)            
-            db.collection("posts").doc(`${postId}`).update({likes: likes})
+            db.collection("posts").doc(`${postId}`).update({likes: likes+1})
                 .then(function() {
                     console.log("Document successfully written!");
                 })
@@ -215,27 +219,76 @@ export function NewPost(props){
             tempLikedByTheseUsers.push(props.name)
             setLikedByTheseUsers(tempLikedByTheseUsers)
 
-            db.collection("posts").doc(`${postId}`).update({likedBy: likedByTheseUsers})
+            db.collection("posts").doc(`${postId}`).update({likedBy: tempLikedByTheseUsers})
                 .then(function() {
                     console.log("Document successfully written!");
                 })
                 .catch(function(error) {
                     console.error("Error writing document: ", error);
                 });
-        }      
+
+            db.collection("posts").doc(`${postId}`).update({likes: likedByTheseUsers.length})
+                .then(function() {
+                    console.log("Document successfully written!");
+                })
+                .catch(function(error) {
+                    console.error("Error writing document: ", error);
+                });
+
+            updateUserLikeCount(props.username)
+        }   
+                   
     }
+
+
+    function updateUserLikeCount(username){
+        var profileNames = []
+        
+        db.collection("profiles").onSnapshot(function(doc) {
+            doc.forEach((info) => {       
+                profileNames.push(info)
+            })
+
+            for(let i = 0; i < profileNames.length; i++){
+                var userInfo = profileNames[i]
+                
+                if(userInfo.data().username === username){
+                    db.collection("profiles").doc(userInfo.id).update({liked: userInfo.liked + 1})
+                }
+            }
+
+        })
+        
+    }
+
+
+
+    function showUserProfile(){
+        if(showPost){
+            setProfile(<ViewProfiles username = {document.getElementById("user-name").innerHTML} />)
+            setShowPost(false)
+        }
+        else{
+            setShowPost(true)
+            setProfile(null)
+        }
+        
+    }
+
 
 
     return( 
         <div>
+
+              
             <div className = "post-body">
                 <div className = "post-header">
-                    <h2 className = "post-text" style = {{paddingLeft: "5px"}}>{props.name}</h2>
+                    <h2 onClick = {showUserProfile} id = "user-name" className = "post-text" style = {{paddingLeft: "5px"}}>{props.name}</h2>
                     <h2 className = "post-text" style = {{paddingRight: "5px"}}>{props.timestamp}</h2>
                 </div>
 
                 <div className = "post-img">
-                    <img id = "display-image" alt = "pic" src= {props.photo} />
+                    <img id = "display-image" alt = "Picture not available" src= {props.photo} />
                     
                 </div>
 
@@ -245,14 +298,21 @@ export function NewPost(props){
                 
                 <div className = "post-likes">                   
                     <p id = "likes-text"><b> Likes: </b> {props.likes} </p> 
-                    <FavoriteIcon  onClick = {() => {likePost(props.id)}} cursor = "pointer" />
+                    <FavoriteIcon  style = {{color: 'red'}} onClick = {() => {likePost(props.id)}} cursor = "pointer" />
                   
                 </div>
             </div>
+            
+
         </div>
     
     )  
 }
+
+  
+
+  
+
 
 
 

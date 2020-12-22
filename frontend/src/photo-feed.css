@@ -4,10 +4,9 @@
     justify-content: center;
     flex-direction: column;
     flex: 1;
-  
     position: absolute;
-    overflow-y:scroll;
-    overflow-x:hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
     white-space: no-wrap;
     top: 75px;
     height: 90vh;

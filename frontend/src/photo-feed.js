@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import "./photo-feed.css"
 import {NewPost} from "./create-post"
-import axios from "axios"
 import db from "./firebase"
+import {connect} from "react-redux"
 
 
-export function PhotoFeed(props) {
+
+function PhotoFeed({username}, props) {
 
     const [fbPost, setFbPost] = useState([])
 
@@ -17,22 +18,29 @@ export function PhotoFeed(props) {
         })
         console.log(fbPost)
 
-    }, [])
+    })
 
-
+ 
     return (
         <div className = "feed">
 
             {
             fbPost.map((post) => (
-                <NewPost name = {props.user} id = {post.id} photo = {post.photo} description = {post.description} user = {post.name} timestamp = {post.timestamp} likes = {post.likes} likedBy = {post.likedBy} />    
+                <NewPost username = {username} name = {props.user} id = {post.id} photo = {post.photo} description = {post.description} user = {post.name} timestamp = {post.timestamp} likes = {post.likedBy.length} likedBy = {post.likedBy} />    
             ))} 
 
-            <div style = {{marginBottom: "125px"}}>
-                <p> </p>
-            </div>
+   
            
         </div>
     )
 }
+
+
+const mapStateToProps = state => {
+    return{
+        username: state.username
+    }
+}
+
+export default connect(mapStateToProps)(PhotoFeed)
 
