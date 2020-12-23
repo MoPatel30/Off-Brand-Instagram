@@ -46,7 +46,24 @@ body{
   flex-direction: column;
   display: flex;
   flex: 0.8;
+  justify-content: center;
   align-items: center;
+  z-index: 1;
+}
+
+#profile-pos{
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#form-pos{
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 10%;
 }
 
 #header{
@@ -70,6 +87,13 @@ body{
 }
 
 
+@media only screen and (min-width : 768px) and (max-width: 1980px){
+  #feed{
+    position: absolute;
+    left: 50%;
+  }
+}
+
 @media only screen and (min-width : 1px) and (max-width: 767px){
   body{
       font-size: 6px;
@@ -77,5 +101,6 @@ body{
   #welcome-header{
     width: 100%;
   }
+
 
 }

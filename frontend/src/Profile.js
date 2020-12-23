@@ -7,7 +7,7 @@ import 'firebase/storage';
 
 
 
-function Profile({ username, userID, userPhoto, liked, posts, bio }) {
+function Profile({ username, userID, userPhoto, likes, posts, bio }) {
     const [editBio, setEditBio] = useState(false)
     const [desc, setDesc] = useState("This is my bio")
 
@@ -34,7 +34,7 @@ function Profile({ username, userID, userPhoto, liked, posts, bio }) {
 
     return (
         <div className = "profile-body" style = {{backgroundColor: "#f8f9f5"}}>
-            <h1 style = {{marginBottom: "20px"}}>{username}'s Profile</h1>
+            <h1 id = "profile-header" style = {{marginBottom: "20px"}}>{username}'s Profile</h1>
 
             <div className = "user-picture">
                 <img id = "pro-pic" src = {`${userPhoto}`} alt= "pro pic" />
@@ -61,7 +61,7 @@ function Profile({ username, userID, userPhoto, liked, posts, bio }) {
             </div>
 
             <div className = "profile-info">
-                <p>{username} has liked {liked} posts</p>
+                <p>{username} has liked {likes} posts</p>
             </div>
             
 
@@ -77,7 +77,7 @@ const mapStateToProps = state => {
         username: state.username,
         userPhoto: state.userPhoto,
         userID: state.userID,
-        liked: state.liked,
+        likes: state.likes,
         posts: state.posts,
         bio: state.bio
     }
@@ -113,7 +113,7 @@ export function ViewProfiles(props){
                 
                 if(userInfo.data().username === user){
                     setBio(userInfo.data().bio)
-                    setLikes(userInfo.data().liked)
+                    setLikes(userInfo.data().likes)
                     setPosts(userInfo.data().posts) 
                 }
             }

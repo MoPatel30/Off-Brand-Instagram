@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import Login from './Login'
 import {connect} from 'react-redux';
 import Profile from "./Profile";
-
+import {ModalPost} from "./create-post"
 
 
 function App({ username }) {
@@ -66,6 +66,7 @@ function App({ username }) {
               <Button className = "buttons" variant="contained" cursor = "pointer" color="secondary" href="/login">
                 Logout
               </Button>
+        
             </div>   
                  
         </nav>
@@ -85,15 +86,17 @@ function App({ username }) {
           <p></p>
         )
       }
-        <div>
+        <div id = "form-pos">
           {form}
         </div>
         
         {
         profile ? 
-          <Profile />
+          <div id = "profile-pos">
+            <Profile />
+          </div>
         :(
-           <p>f</p>
+           <p></p>
         )
         }
      

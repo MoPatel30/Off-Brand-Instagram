@@ -35,7 +35,7 @@ function Login() {
                                 username: userInfo.data().username,
                                 userphoto: result.user.photoURL,
                                 userID: userInfo.id,
-                                liked: userInfo.data().liked,
+                                likes: userInfo.data().likes,
                                 posts: userInfo.data().posts,
                                 bio: userInfo.data().bio
                                       
@@ -44,7 +44,7 @@ function Login() {
                           console.log(userInfo.data().username)
                           console.log(result.user.photoURL)
                           console.log(userInfo.id)
-                          console.log(userInfo.data().liked)
+                          console.log(userInfo.data().likes)
                           console.log(userInfo.data().posts)
                           console.log(userInfo.data().bio)
                     }
@@ -91,8 +91,8 @@ function Login() {
         const post = {
             username: username,
             bio: "Edit your bio",
-            liked: 3,
-            posts: 3
+            likes: 0,
+            posts: 0
         }      
    
         var doesProfileNotExist = checkForProfile(username)
@@ -125,7 +125,7 @@ function Login() {
                 username: name,
                 userphoto: photoURL,
                 userID: userId,
-                liked: 0,
+                likes: 0,
                 posts: 0,
                 bio: "Edit your own personal bio!"
                       

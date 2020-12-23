@@ -95,7 +95,7 @@ function MakePostForm({userID, posts, username}){
                             description: String(desc),
                             likes: 0,
                             id: String(number),
-                            likedBy: []
+                            likedBy: new Array()
                         }
      
                         db.collection("posts").doc(String(number)).set(post)
@@ -204,8 +204,9 @@ export function NewPost(props){
     const [profile, setProfile] = useState(null)
     const [showPost, setShowPost] = useState(true)
 
-    function likePost(postId){ 
-        if(likedByTheseUsers.indexOf(props.name) === -1){    
+
+    function likePost(postId, username){ 
+        if(likedByTheseUsers.indexOf(props.username) === -1){    
             setLikes(likes + 1)            
             db.collection("posts").doc(`${postId}`).update({likes: likes+1})
                 .then(function() {
@@ -216,10 +217,11 @@ export function NewPost(props){
                 });
             
             var tempLikedByTheseUsers = likedByTheseUsers
-            tempLikedByTheseUsers.push(props.name)
+            tempLikedByTheseUsers.push(username)
             setLikedByTheseUsers(tempLikedByTheseUsers)
+            console.log(likedByTheseUsers)
 
-            db.collection("posts").doc(`${postId}`).update({likedBy: tempLikedByTheseUsers})
+            db.collection("posts").doc(`${postId}`).update({likedBy: likedByTheseUsers})
                 .then(function() {
                     console.log("Document successfully written!");
                 })
@@ -253,7 +255,7 @@ export function NewPost(props){
                 var userInfo = profileNames[i]
                 
                 if(userInfo.data().username === username){
-                    db.collection("profiles").doc(userInfo.id).update({liked: userInfo.liked + 1})
+                    db.collection("profiles").doc(userInfo.id).update({likes: userInfo.likes + 1})
                 }
             }
 
@@ -275,12 +277,10 @@ export function NewPost(props){
         
     }
 
-
-
+    
     return( 
         <div>
-
-              
+          
             <div className = "post-body">
                 <div className = "post-header">
                     <h2 onClick = {showUserProfile} id = "user-name" className = "post-text" style = {{paddingLeft: "5px"}}>{props.name}</h2>
@@ -298,7 +298,7 @@ export function NewPost(props){
                 
                 <div className = "post-likes">                   
                     <p id = "likes-text"><b> Likes: </b> {props.likes} </p> 
-                    <FavoriteIcon  style = {{color: 'red'}} onClick = {() => {likePost(props.id)}} cursor = "pointer" />
+                    <FavoriteIcon  style = {{color: 'red'}} onClick = {() => {likePost(props.id, props.username)}} cursor = "pointer" />
                   
                 </div>
             </div>
@@ -321,14 +321,13 @@ export function ModalPost(){
 
     return(
         <div>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-        
+           <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
             <div id="myModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
-            
+
                 <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Modal Header</h4>
                 </div>
                 <div class="modal-body">
@@ -338,7 +337,7 @@ export function ModalPost(){
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
                 </div>
-            
+
             </div>
             </div>
         </div>

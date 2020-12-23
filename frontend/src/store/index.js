@@ -5,7 +5,7 @@ const initialState = {
     username: "",
     userPhoto: "",
     userID: "", 
-    liked: 0,
+    likes: 0,
     posts: 0,
     bio: ""
 }
@@ -16,7 +16,7 @@ const reducer = (state = initialState, action) => {
             username : action.payload.username,
             userPhoto: action.payload.userphoto,
             userID: action.payload.userID,
-            liked: action.payload.liked,
+            likes: action.payload.likes,
             posts: action.payload.posts,
             bio: action.payload.bio
         })

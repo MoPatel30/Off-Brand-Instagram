@@ -16,7 +16,7 @@ function PhotoFeed({username}, props) {
             setFbPost(snapshot.docs.map(doc => doc.data()))
             
         })
-        console.log(fbPost)
+       
 
     })
 

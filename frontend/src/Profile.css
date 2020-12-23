@@ -44,6 +44,14 @@
         font-size: 6px;
     }
 
+    .profile-body{
+        margin-top: 60px;
+    }
+
+    #profile-header{
+        font-size: 1.5rem;
+    }
+
     .bio{
         font-size: 1rem;
     }
