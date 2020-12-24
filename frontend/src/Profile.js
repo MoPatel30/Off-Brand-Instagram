@@ -12,6 +12,7 @@ function Profile({ username, userID, userPhoto, likes, posts, bio }) {
     const [desc, setDesc] = useState("This is my bio")
 
     function changeBio(){
+        console.log(userPhoto)
         if(!editBio){
             setEditBio(true)
         }
@@ -37,7 +38,7 @@ function Profile({ username, userID, userPhoto, likes, posts, bio }) {
             <h1 id = "profile-header" style = {{marginBottom: "20px"}}>{username}'s Profile</h1>
 
             <div className = "user-picture">
-                <img id = "pro-pic" src = {`${userPhoto}`} alt= "pro pic" />
+                <img id = "pro-pic" src = {userPhoto} alt= "pro pic" />
             </div>
 
        
@@ -69,7 +70,6 @@ function Profile({ username, userID, userPhoto, likes, posts, bio }) {
     )
 
 }
-
 
 
 const mapStateToProps = state => {

@@ -80,7 +80,7 @@ function App({ username }) {
       <div className = "App-body">
       { username ? 
         <div id = "feed">
-          <PhotoFeed user = {username} />
+          <PhotoFeed />
         </div>
         :(
           <p></p>

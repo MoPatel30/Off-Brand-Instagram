@@ -20,9 +20,9 @@ const reducer = (state = initialState, action) => {
             posts: action.payload.posts,
             bio: action.payload.bio
         })
-
+        
     }
-
+    
     return state
 }
 

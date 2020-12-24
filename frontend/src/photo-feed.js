@@ -6,7 +6,7 @@ import {connect} from "react-redux"
 
 
 
-function PhotoFeed({username}, props) {
+function PhotoFeed({username}) {
 
     const [fbPost, setFbPost] = useState([])
 
@@ -17,7 +17,6 @@ function PhotoFeed({username}, props) {
             
         })
        
-
     })
 
  
@@ -26,7 +25,7 @@ function PhotoFeed({username}, props) {
 
             {
             fbPost.map((post) => (
-                <NewPost username = {username} name = {props.user} id = {post.id} photo = {post.photo} description = {post.description} user = {post.name} timestamp = {post.timestamp} likes = {post.likedBy.length} likedBy = {post.likedBy} />    
+                <NewPost username = {username} name = {post.name} id = {post.id} photo = {post.photo} description = {post.description} user = {post.name} timestamp = {post.timestamp} likes = {post.likedBy.length} likedBy = {post.likedBy} />    
             ))} 
 
    

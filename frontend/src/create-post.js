@@ -198,7 +198,7 @@ export default connect(mapStateToProps)(MakePostForm);
 
 
 
-export function NewPost(props){
+export function NewPost(props, {userID, liked}){
     const [likes, setLikes] = useState(props.likes)
     const [likedByTheseUsers, setLikedByTheseUsers] = useState(props.likedBy)
     const [profile, setProfile] = useState(null)
@@ -237,13 +237,17 @@ export function NewPost(props){
                     console.error("Error writing document: ", error);
                 });
 
-            updateUserLikeCount(props.username)
+            updateUserLikeCount()
         }   
                    
     }
 
 
-    function updateUserLikeCount(username){
+    function updateUserLikeCount(){
+
+        db.collection("profiles").doc(userID).update({likes: liked + 1})
+
+        /*
         var profileNames = []
         
         db.collection("profiles").onSnapshot(function(doc) {
@@ -259,10 +263,9 @@ export function NewPost(props){
                 }
             }
 
-        })
+        })*/
         
     }
-
 
 
     function showUserProfile(){
@@ -277,18 +280,18 @@ export function NewPost(props){
         
     }
 
-    
+
     return( 
         <div>
           
             <div className = "post-body">
                 <div className = "post-header">
-                    <h2 onClick = {showUserProfile} id = "user-name" className = "post-text" style = {{paddingLeft: "5px"}}>{props.name}</h2>
+                    <h2 id = "user-name" className = "post-text" style = {{paddingLeft: "5px"}}>{props.name}</h2>
                     <h2 className = "post-text" style = {{paddingRight: "5px"}}>{props.timestamp}</h2>
                 </div>
 
                 <div className = "post-img">
-                    <img id = "display-image" alt = "Picture not available" src= {props.photo} />
+                    <img id = "display-image" style = {{minWidth: "400px", minHeight: "400px"}} alt = "Picture not available" src= {props.photo} />
                     
                 </div>
 
@@ -310,9 +313,14 @@ export function NewPost(props){
 }
 
   
+const mapStateToPropsTwo = state => {
+    return {   
+        userID: state.userID,
+        liked: state.likes
+    }
+}
 
-  
-
+connect(mapStateToPropsTwo)(NewPost)
 
 
 
