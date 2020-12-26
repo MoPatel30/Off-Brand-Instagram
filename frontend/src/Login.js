@@ -10,6 +10,8 @@ import db from "./firebase"
 function Login() {
 
     const [userInfo, setUserInfo] = useState(null)
+    const [isNewProfile, setIsNewProfile] = useState(null)
+    const [checkProfiles, setCheckProfiles] = useState(null)
 
     function signIn(){
         auth
@@ -17,85 +19,103 @@ function Login() {
             .then((result) => {
               
                 console.log(result.user)
-                setUserInfo(result.user)      
+                setUserInfo(result.user)
+                     
             }) 
             .catch((error) => alert(error.message))
-          
+            
     }
 
     useEffect(() => {
+        if(checkProfiles !== null){
+            checkForProfile(userInfo.displayName)
+        }
+    }, [checkProfiles])
 
-        console.log(userInfo)
-        
+    useEffect(() => {
+
         if(userInfo !== null){
-            var isOldprofile = checkForProfile(userInfo.displayName)
-        if(!isOldprofile){
-            var profileNames = []
-            console.log("true")
-            db.collection("profiles").onSnapshot(function(doc) {
-                doc.forEach((info) => {         
-                    profileNames.push(info)   
-                })
-          
-                for(let i = 0; i < profileNames.length; i++){
-                    var curUserInfo = profileNames[i]
-    
-                    if(curUserInfo.data().username === userInfo.displayName){
-                        store.dispatch({
-    
-                        type: "ADD_POST",
-                            payload:
-                            {   
-                                username: curUserInfo.data().username,
-                                userphoto: userInfo.photoURL,
-                                userID: curUserInfo.id,
-                                likes: curUserInfo.data().likes,
-                                posts: curUserInfo.data().posts,
-                                bio: curUserInfo.data().bio
-                                          
-                            }
-                        })
-                          console.log(curUserInfo.data().username)
-                          console.log(userInfo.photoURL)
-                          console.log(curUserInfo.id)
-                          console.log(curUserInfo.data().likes)
-                          console.log(curUserInfo.data().posts)
-                          console.log(curUserInfo.data().bio)
-                    }
-                }
-    
-            })
+            setCheckProfiles(true)
+            if(isNewProfile !== null){
+                console.log(isNewProfile)
                 
-        }
-        else{
-            console.log("making new new profile, false")
-            var userId = createProfile(userInfo.displayName)
-            updateState(userInfo.displayName, userInfo.photoURL, userId)         
-        }  
+                if(isNewProfile === false){
+                    
+                    var profileNames = []
+                
+                    db.collection("profiles").onSnapshot(function(doc) {
+                        doc.forEach((info) => {         
+                            profileNames.push(info)   
+                        })
+                
+                        for(let i = 0; i < profileNames.length; i++){
+                            var curUserInfo = profileNames[i]
+                   
+                            if(curUserInfo.data().username === userInfo.displayName){
+                                store.dispatch({
+            
+                                type: "ADD_POST",
+                                    payload:
+                                    {   
+                                        username: curUserInfo.data().username,
+                                        userphoto: userInfo.photoURL,
+                                        userID: curUserInfo.id,
+                                        likes: curUserInfo.data().likes,
+                                        posts: curUserInfo.data().posts,
+                                        bio: curUserInfo.data().bio
+                                                
+                                    }
+                                })
+                                /*
+                                console.log(curUserInfo.data().username)
+                                console.log(userInfo.photoURL)
+                                console.log(curUserInfo.id)
+                                console.log(curUserInfo.data().likes)
+                                console.log(curUserInfo.data().posts)
+                                console.log(curUserInfo.data().bio)
+                                */
+                            }
+                        }
+            
+                    })
+                        
+                }
+                else{
+                    
+                    var userId = createProfile(userInfo.displayName)
+                    updateState(userInfo.displayName, userInfo.photoURL, userId)         
+                }  
+            }
         }
         
-    }, [userInfo])
+    }, [userInfo, isNewProfile])
 
 
 
     function checkForProfile(username){
         
         let profileNames = []
-        let isNewProfile = true
-
+      
         db.collection("profiles").get().then((doc) => {
             doc.forEach((info) => {       
                 profileNames.push(info.data().username)
+                    
             })
+            console.log(profileNames)
             for(let i = 0; i < profileNames.length; i++){
+                
                 var name = profileNames[i]
-                console.log(isNewProfile)
+          
                 if(name === username){
-                    isNewProfile = false
+                    setIsNewProfile(false)
                 }
+            
             }
-            console.log("hi" + String(isNewProfile))
-            return isNewProfile
+           
+            console.log("hi " + String(isNewProfile))
+            if(isNewProfile === null){
+                setIsNewProfile(true)
+            }
 
         })
 
@@ -111,12 +131,10 @@ function Login() {
             posts: 0
         }      
         
-        var doesProfileNotExist = checkForProfile(username)
-        
+
         var number = Math.floor(Math.random() * 999999999)
 
-        if(doesProfileNotExist === true){
-            console.log("making new new profile")
+        if(isNewProfile){
             
             db.collection("profiles").doc(String(number)).set(post)
                 .then(function() {
@@ -125,8 +143,8 @@ function Login() {
                 .catch(function(error) {
                     console.error("Error writing document: ", error);
                 });    
+       
         }
-
         //setUserID(String(number))
         return String(number)
 
