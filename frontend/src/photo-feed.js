@@ -12,7 +12,7 @@ function PhotoFeed({username}) {
 
 
     useEffect(() => {
-        db.collection('posts').onSnapshot(snapshot => {
+        db.collection('posts').orderBy("timestamp", "desc").onSnapshot(snapshot => {
             setFbPost(snapshot.docs.map(doc => doc.data()))
             
         })
@@ -25,7 +25,7 @@ function PhotoFeed({username}) {
 
             {
             fbPost.map((post) => (
-                <NewPost username = {username} name = {post.name} id = {post.id} photo = {post.photo} description = {post.description} user = {post.name} timestamp = {post.timestamp} likes = {post.likedBy.length} likedBy = {post.likedBy} />    
+                <NewPost username = {username} name = {post.name} id = {post.id} photo = {post.photo} description = {post.description} user = {post.name} date = {post.date} likes = {post.likedBy.length} likedBy = {post.likedBy} />    
             ))} 
 
    

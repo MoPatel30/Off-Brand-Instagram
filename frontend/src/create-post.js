@@ -3,6 +3,7 @@ import "./create-post.css"
 import db from "./firebase";
 import {storage} from "./firebase"
 import 'firebase/firestore';
+import firebase from "firebase";
 import 'firebase/storage';
 import TextField from '@material-ui/core/TextField';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -56,8 +57,6 @@ function MakePostForm({userID, posts, username}){
     const date = String((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + (new Date().getFullYear())) 
     const [pic, setPic] = useState(null)
     const [desc, setDesc] = useState("")
-    
-    console.log(userID)
  
 
     const ImageChange = (e) => {
@@ -90,12 +89,14 @@ function MakePostForm({userID, posts, username}){
                     .then(url => {
                         var post = {
                             name: username,
-                            timestamp: date,
+                            date: date,
                             photo: url,
                             description: String(desc),
                             likes: 0,
                             id: String(number),
-                            likedBy: new Array()
+                            likedBy: new Array(),
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+
                         }
      
                         db.collection("posts").doc(String(number)).set(post)
@@ -287,7 +288,7 @@ export function NewPost(props, {userID, liked}){
             <div className = "post-body">
                 <div className = "post-header">
                     <h2 id = "user-name" className = "post-text" style = {{paddingLeft: "5px"}}>{props.name}</h2>
-                    <h2 className = "post-text" style = {{paddingRight: "5px"}}>{props.timestamp}</h2>
+                    <h2 className = "post-text" style = {{paddingRight: "5px"}}>{props.date}</h2>
                 </div>
 
                 <div className = "post-img">
