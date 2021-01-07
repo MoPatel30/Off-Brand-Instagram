@@ -1,17 +1,17 @@
 import React, {useState} from "react"
 import './App.css';
-import MakePostForm from "./create-post"
-import PhotoFeed from "./photo-feed";
+import MakePostForm from "./CreatePost/CreatePost"
+import PhotoFeed from "./PhotoFeed/PhotoFeed";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from '@material-ui/core/Button';
-import Login from './Login'
+import Login from './Login/Login'
 import {connect} from 'react-redux';
-import Profile from "./Profile";
-import {ModalPost} from "./create-post"
+import Profile from "./Profile/Profile";
+
 
 
 function App({ username }) {
-  // const [user, setUser] = useState(username)
+
   const [form, setForm] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [profile, setProfile] = useState(false)
@@ -114,20 +114,3 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps)(App);
 
-
-/*
-
-   <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" cursor = "pointer" onClick = {signIn()}>Logout</a>
-            </li>
-          </ul>
-
-
-*/

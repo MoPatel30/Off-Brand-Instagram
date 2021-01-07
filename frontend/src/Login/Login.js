@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import "./Login.css";
-import {auth, provider} from "./firebase"
+import {auth, provider} from "../firebase"
 import {connect} from "react-redux"
-import store from "./store/index"
-import db from "./firebase"
+import store from "../store/index"
+import db from "../firebase"
 
 
 
@@ -66,14 +66,7 @@ function Login() {
                                                 
                                     }
                                 })
-                                /*
-                                console.log(curUserInfo.data().username)
-                                console.log(userInfo.photoURL)
-                                console.log(curUserInfo.id)
-                                console.log(curUserInfo.data().likes)
-                                console.log(curUserInfo.data().posts)
-                                console.log(curUserInfo.data().bio)
-                                */
+  
                             }
                         }
             
@@ -121,7 +114,6 @@ function Login() {
 
     }
 
-
     function createProfile(username){
 
         const post = {
@@ -150,7 +142,6 @@ function Login() {
 
     }
 
-
     function updateState(name, photoURL, userId){
        
         store.dispatch({
@@ -176,9 +167,7 @@ function Login() {
                 <p id = "slogan"><i>Share your moments with the world</i></p>
                 <h2 id = "title"> Sign In </h2>
                 <button id = "google-btn" onClick = {signIn}>Google</button>
-            </div>
-            
-            
+            </div>        
         </div>
     )
 }
@@ -189,5 +178,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 export default connect(mapDispatchToProps)(Login)
-
 

@@ -12,7 +12,6 @@ body{
     border-radius: 10px 10px 10px 10px;
     z-index: 1;
     width: 100%;
-   
 }
 
 .post-header{
@@ -23,15 +22,13 @@ body{
 }
 
 .post-text{
-    font-size: 1.5rem;
-    
+    font-size: 1.5rem;  
 }
 
 .post-img{
     margin-top: -15px;
     border: 1px solid grey;
     margin-bottom: 5px;
-
 }
 
 .post-description{
@@ -91,8 +88,7 @@ body{
 .form-items{
     display: grid;
     align-items: center;
-    justify-content: space-evenly;
-    
+    justify-content: space-evenly;   
 }
 
 #picture{

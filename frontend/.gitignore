@@ -23,7 +23,7 @@
 
 .firebaserc
 
-/src/firebase.js
+./src/firebase.js
 
 ../backend
 

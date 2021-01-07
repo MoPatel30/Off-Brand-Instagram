@@ -1,7 +1,7 @@
 import React, {useState} from "react"
-import "./create-post.css"
-import db from "./firebase";
-import {storage} from "./firebase"
+import "./CreatePost.css"
+import db from "../firebase";
+import {storage} from "../firebase"
 import 'firebase/firestore';
 import firebase from "firebase";
 import 'firebase/storage';
@@ -10,7 +10,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux';
-import {ViewProfiles} from './Profile'
+import {ViewProfiles} from '../Profile/Profile'
 
 
 
@@ -202,8 +202,6 @@ export default connect(mapStateToProps)(MakePostForm);
 export function NewPost(props, {userID, liked}){
     const [likes, setLikes] = useState(props.likes)
     const [likedByTheseUsers, setLikedByTheseUsers] = useState(props.likedBy)
-    const [profile, setProfile] = useState(null)
-    const [showPost, setShowPost] = useState(true)
 
 
     function likePost(postId, username){ 
@@ -247,37 +245,6 @@ export function NewPost(props, {userID, liked}){
     function updateUserLikeCount(){
 
         db.collection("profiles").doc(userID).update({likes: liked + 1})
-
-        /*
-        var profileNames = []
-        
-        db.collection("profiles").onSnapshot(function(doc) {
-            doc.forEach((info) => {       
-                profileNames.push(info)
-            })
-
-            for(let i = 0; i < profileNames.length; i++){
-                var userInfo = profileNames[i]
-                
-                if(userInfo.data().username === username){
-                    db.collection("profiles").doc(userInfo.id).update({likes: userInfo.likes + 1})
-                }
-            }
-
-        })*/
-        
-    }
-
-
-    function showUserProfile(){
-        if(showPost){
-            setProfile(<ViewProfiles username = {document.getElementById("user-name").innerHTML} />)
-            setShowPost(false)
-        }
-        else{
-            setShowPost(true)
-            setProfile(null)
-        }
         
     }
 
@@ -306,14 +273,14 @@ export function NewPost(props, {userID, liked}){
                   
                 </div>
             </div>
-            
-
+        
         </div>
     
     )  
 }
 
   
+
 const mapStateToPropsTwo = state => {
     return {   
         userID: state.userID,

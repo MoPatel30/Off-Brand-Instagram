@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {connect} from "react-redux"
 import "./Profile.css"
-import db from "./firebase";
+import db from "../firebase";
 import 'firebase/firestore';
 import 'firebase/storage';
 
@@ -64,8 +64,7 @@ function Profile({ username, userID, userPhoto, likes, posts, bio }) {
             <div className = "profile-info">
                 <p>{username} has liked {likes} posts</p>
             </div>
-            
-
+        
         </div>
     )
 

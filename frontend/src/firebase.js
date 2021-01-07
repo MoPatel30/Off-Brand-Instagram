@@ -4,7 +4,7 @@ import 'firebase/storage';
 
 
 firebase.initializeApp({
-x = 0
+dddd
 })
 
 
