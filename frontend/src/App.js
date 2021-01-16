@@ -41,19 +41,18 @@ function App({ username }) {
   }
 
 
-
   return (
     <div className="App">
-      { username ? 
-      <div className = "header">
-        <nav id = "header" className = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-          
-          <div id = "title-header">
-            <h1 style = {{color: "white", textAlign: "left", fontSize: "2rem"}}><i>PhotoShare</i></h1>
+      { username ?
+
+      <div>
+        <header>
+        <div id = "title-header">
+            <h1 style = {{color: "black", textAlign: "center", fontSize: "2rem"}}><i>PhotoShare</i></h1>
           </div>
 
           <div id = "welcome-header">
-            <h1 style = {{color: "white", textAlign: "center", fontSize: "1.5rem"}}> Welcome, {username}!</h1>
+            <h1 style = {{color: "black", textAlign: "center", fontSize: "1.5rem"}}> Welcome, {username}!</h1>
           </div>
  
             <div className = "buttons">
@@ -65,12 +64,11 @@ function App({ username }) {
               </Button>
               <Button className = "buttons" variant="contained" cursor = "pointer" color="secondary" href="/login">
                 Logout
-              </Button>
-        
+              </Button>  
             </div>   
-                 
-        </nav>
+        </header>
       </div>
+
         :(
           <Login />
         )

@@ -8,9 +8,10 @@ body{
 
 .post-body{
     border: 2px solid grey;
-    margin-bottom: 75px;
-    border-radius: 10px 10px 10px 10px;
+    margin-bottom: 50px;
+    border-radius: 5px;
     z-index: 1;
+    background-color: white;
     width: 100%;
 }
 
@@ -61,7 +62,7 @@ body{
     border: 3px solid black;
     border-radius: 10px;
     background-color: #f8f9f5; 
-    top: 150px; 
+    top: 230px; 
     right: 100px;
     transition: 0.2s ease;
 }

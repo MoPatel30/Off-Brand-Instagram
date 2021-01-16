@@ -7,7 +7,7 @@
     width: fit-content;
     
     padding: 25px;
-    top: 110px;
+    top: 8%;
     border: 3px solid grey;
     border-radius: 25px 25px 25px 25px;
     box-shadow: -1px 10px 20px -6px rgba(0, 0, 0, 0.75);   
@@ -43,8 +43,34 @@
     }
 
     .profile-body{
-        margin-top: 60px;
-        top: 75px;
+        margin-top: 20px;
+    }
+
+    #profile-header{
+        font-size: 1.5rem;
+    }
+
+    .bio{
+        font-size: 1rem;
+        margin-bottom: 40px;
+    }
+
+    .profile-info{
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+}
+
+
+@media only screen and (min-width : 1px) and (max-width: 376px){
+    body{
+        font-size: 6px;
+    }
+
+    .profile-body{
+        margin-top: 10px;
+        min-width: 100%;
+        right: 1%;
         
     }
 
@@ -54,36 +80,11 @@
 
     .bio{
         font-size: 1rem;
+        margin-bottom: 40px;
     }
 
     .profile-info{
         font-size: 1rem;
-    }
-}
-
-
-@media only screen and (min-width : 1px) and (max-width: 376px){
-
-    body{
-        font-size: 6px;
-    }
-
-    .profile-body{
-        margin-top: 60px;
-        top: 90px;
-        min-width: 115%;
-        left: 4.5%;
-    }
-
-    #profile-header{
-        font-size: 1.5rem;
-    }
-
-    .bio{
-        font-size: 1rem;
-    }
-
-    .profile-info{
-        font-size: 1rem;
+        margin-bottom: 10px;
     }
 }

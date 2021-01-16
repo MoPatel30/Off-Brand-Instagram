@@ -6,6 +6,14 @@ body{
   font-size: 12px;
 }
 
+header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  flex-direction: column;
+}
+
 .App {
   display: grid;
   place-items: center;
@@ -70,7 +78,8 @@ body{
   display: flex;
   justify-content: center;
   align-content: center;
-  width: 60%;
+  width: 100%;
+  margin-bottom: 5%;
 }
 
 #title-header{
@@ -86,13 +95,25 @@ body{
   }
 }
 
+
 @media only screen and (min-width : 1px) and (max-width: 767px){
   body{
       font-size: 6px;
   }
+  
   #welcome-header{
-    width: 100%;
+    width: fit-content;
   }
 
+  #welcome-header h1{
+    margin-left: 15px;
+  }
+
+  header{
+    
+    width: fit-content;
+    margin: auto;
+    min-width: 95vw;
+  }
 
 }
